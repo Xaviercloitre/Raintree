@@ -36,8 +36,8 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
     /* Baby steps: the child walks down the section as the parent scrolls (mobile).
-       Reveal follows scroll progress through the section, one print at a time,
-       and prints stay once made, like footprints. */
+       Each print appears when the scroll reaches it and fades again once the
+       walk has moved on, so the trail follows the scroll both ways. */
     var stepsBg = document.querySelector('.baby-steps');
     var prints = document.querySelectorAll('.baby-steps svg');
     if (stepsBg && prints.length) {
@@ -51,7 +51,8 @@
           var vh = window.innerHeight || 1;
           var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
           prints.forEach(function (p) {
-            if (progress >= parseFloat(p.getAttribute('data-t')) + 10) p.classList.add('seen');
+            var t = parseFloat(p.getAttribute('data-t'));
+            p.classList.toggle('seen', progress >= t + 8 && progress <= t + 58);
           });
         };
         var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
