@@ -191,8 +191,9 @@
   .pillar svg path, .pillar svg circle { stroke: var(--rt-ink); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .pillar h3 { font-family: var(--rt-font-head); font-weight: 600; font-size: 18px; color: var(--rt-ink); margin: 0; }
   .pillar p { margin: 0; color: var(--rt-slate); font-size: 15px; line-height: 1.6; }
-  .approach-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
-  .approach-cta a:hover { border-color: var(--rt-ink); }
+  .approach-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; padding-bottom: 9px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 9' preserveAspectRatio='none'%3E%3Cfilter id='c' x='-10%25' y='-60%25' width='120%25' height='220%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12 0.9' numOctaves='2' seed='4'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='2.6'/%3E%3C/filter%3E%3Cpath d='M3 5.5 C 40 2.8, 85 7.2, 157 4' fill='none' stroke='%239CCFE3' stroke-width='2.8' stroke-linecap='round' filter='url(%23c)'/%3E%3C/svg%3E") no-repeat left bottom / 100% 9px; }
+  .approach-cta a:hover { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 9' preserveAspectRatio='none'%3E%3Cfilter id='c' x='-10%25' y='-60%25' width='120%25' height='220%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12 0.9' numOctaves='2' seed='4'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='2.6'/%3E%3C/filter%3E%3Cpath d='M3 5.5 C 40 2.8, 85 7.2, 157 4' fill='none' stroke='%236D737C' stroke-width='2.8' stroke-linecap='round' filter='url(%23c)'/%3E%3C/svg%3E"); }
   .approach-cta .arrow { transition: transform .14s ease; }
   .approach-cta a:hover .arrow { transform: translateX(3px); }
   @media (prefers-reduced-motion: reduce) { .approach-cta .arrow { transition: none; } .approach-cta a:hover .arrow { transform: none; } }
