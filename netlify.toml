@@ -1,0 +1,8 @@
+# Raintree static build
+# Staging guard: the X-Robots-Tag below stops the Netlify URL competing with
+# the live raintree.ac.th. REMOVE it (and the meta robots tag in index.html)
+# at domain cutover.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
