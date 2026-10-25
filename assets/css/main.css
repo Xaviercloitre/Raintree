@@ -211,6 +211,7 @@
   .stages-intro { font-size: 17px; color: var(--rt-ink); margin: 0 0 36px; max-width: 60ch; }
   .stage-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 0; padding: 0; list-style: none; }
   .stage-card { position: relative; background: #fff; border: 1px solid var(--rt-border); border-radius: var(--rt-radius-card); padding: 0 26px 28px; overflow: hidden; display: flex; flex-direction: column; gap: 10px; transition: transform .14s ease, box-shadow .14s ease; }
+  .ph img, .player img, .portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ph { position: relative; aspect-ratio: 4 / 3; margin: 0 -26px 8px; background: linear-gradient(150deg, #EAF5F9 10%, #D8EDF5 55%, #BBE0EC 100%); display: flex; align-items: flex-end; }
   .ph svg { position: absolute; width: 58%; right: -10%; top: 12%; opacity: .55; }
   .ph svg path { fill: #fff; }
