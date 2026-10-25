@@ -102,13 +102,12 @@
 
     /* Hero video background: YouTube clip 0:53 to 1:20 on a muted loop.
        Demo wiring only; the build self-hosts a trimmed MP4/WebM instead.
-       Desktop only, never under reduced motion or data saver; the placeholder scene shows otherwise or while loading. */
+       All devices; never under reduced motion or data saver; the placeholder scene shows otherwise or while loading. */
     var START = 53, END = 80, VID = 'R0XAL3NyN40';
     var ytWrap = document.getElementById('hero-yt-wrap');
     var hero = document.querySelector('.hero-card');
     var conn = navigator.connection || {};
-    var wantsVideo = window.matchMedia('(min-width: 960px)').matches
-      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    var wantsVideo = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
       && !conn.saveData;
     if (ytWrap && wantsVideo) {
       var SRC = 'https://www.youtube.com/embed/' + VID
