@@ -201,8 +201,23 @@
       <div class="hero-ctas">
         <span class="chalk-wrap">
           <a class="btn-tour" href="/choose-campus-book-a-school-tour/">Book a School Tour</a>
-          <svg class="chalk-arrow" viewBox="0 0 58 52" aria-hidden="true">
-            <path pathLength="1" d="M52 4 C 50 18, 42 32, 26 41 C 22 43, 18 44, 13 45 M22 46 L11 45.5 L16 36"/>
+          <svg class="chalk-arrow" viewBox="0 0 74 70" aria-hidden="true">
+            <defs>
+              <filter id="chalk-grain" x="-30%" y="-30%" width="160%" height="160%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="7" result="n"/>
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"/>
+              </filter>
+              <filter id="chalk-dusty" x="-40%" y="-40%" width="180%" height="180%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n2"/>
+                <feDisplacementMap in="SourceGraphic" in2="n2" scale="6"/>
+              </filter>
+            </defs>
+            <path class="halo" filter="url(#chalk-dusty)" stroke-opacity=".35" d="M63 6 C 70 14, 62 22, 54 17 C 46 12, 51 4, 59 7 C 67 11, 64 28, 55 40 C 48 49, 39 54, 28 57"/>
+            <path class="stroke c1" pathLength="1" filter="url(#chalk-grain)" d="M63 6 C 70 14, 62 22, 54 17 C 46 12, 51 4, 59 7 C 67 11, 64 28, 55 40 C 48 49, 39 54, 28 57"/>
+            <path class="stroke c2" pathLength="1" filter="url(#chalk-grain)" d="M38 60 L25 59 L31 48 M34 64 L22 61 L27 52"/>
+            <g class="dust" filter="url(#chalk-dusty)">
+              <circle cx="48" cy="30" r="1.1"/><circle cx="58" cy="22" r=".9"/><circle cx="40" cy="48" r="1.2"/><circle cx="30" cy="62" r=".8"/><circle cx="66" cy="12" r=".8"/>
+            </g>
           </svg>
         </span>
         <a class="btn-apply" href="#">Apply Now</a>
