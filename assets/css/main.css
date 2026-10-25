@@ -5,7 +5,7 @@
     --rt-slate: #6D737C;
     --rt-ink: #2E3540;
     --rt-paper: #FBFAF7;
-    --rt-accent: #2E6B5E; /* Option A, pending client choice; toggle below previews Option B #C2563F */
+    --rt-accent: #2F6D80; /* Proposed Option D deep canopy; toggle in the review panel previews A green, B coral, C ink */
     --rt-radius-btn: 999px;
     --rt-radius-card: 18px;
     --rt-font-head: "Montserrat", "Trebuchet MS", sans-serif;
@@ -169,14 +169,14 @@
   }
 
   /* ---------- Proof strip ---------- */
-  .proof { border-block: 1px solid var(--rt-border); background: var(--rt-paper); }
-  .proof-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 0; list-style: none; }
-  .proof-inner li { display: flex; align-items: center; color: var(--rt-ink); font-family: var(--rt-font-head); font-size: 14px; font-weight: 500; letter-spacing: .02em; white-space: nowrap; }
-  .proof-inner li + li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rt-canopy); margin: 0 18px; flex: none; }
-  .proof-inner .note { color: var(--rt-slate); font-family: var(--rt-font-body); font-weight: 400; margin-left: 5px; }
-  @media (max-width: 960px) {
-    .proof-inner { flex-direction: column; gap: 10px; padding-block: 18px; }
-    .proof-inner li + li::before { display: none; }
+  .proof { background: var(--rt-paper); }
+  .proof-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px 32px; list-style: none; }
+  .proof-inner li { border-left: 2px solid var(--rt-canopy); padding-left: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .proof-inner .k { font-family: var(--rt-font-head); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); }
+  .proof-inner .v { font-family: var(--rt-font-head); font-size: 16px; font-weight: 600; color: var(--rt-ink); line-height: 1.4; text-wrap: balance; }
+  @media (max-width: 640px) {
+    .proof-inner { grid-template-columns: 1fr 1fr; padding-block: 30px 34px; gap: 20px 20px; }
+    .proof-inner .v { font-size: 15px; }
   }
 
   /* ---------- Our approach ---------- */
