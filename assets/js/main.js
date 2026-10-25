@@ -35,6 +35,17 @@
     backdrop.addEventListener('click', closeSheet);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
+    /* Baby steps: big footprints appear in the background as you scroll (mobile) */
+    var prints = document.querySelectorAll('.baby-steps svg');
+    if (prints.length && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } });
+      }, { threshold: 0.2 });
+      prints.forEach(function (p) { io.observe(p); });
+    } else {
+      prints.forEach(function (p) { p.classList.add('seen'); });
+    }
+
     /* Day section: video loads only on tap, behind the poster, per the brief */
     var dayPlay = document.getElementById('day-play');
     if (dayPlay) dayPlay.addEventListener('click', function () {
