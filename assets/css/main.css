@@ -156,10 +156,7 @@
   .hero-content h1 .kicker { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); line-height: 1.4; }
   .hero-content h1 .headline { display: block; }
   .hero-lede { font-size: 17px; line-height: 1.65; color: var(--rt-ink); margin: 0 0 26px; max-width: 54ch; }
-  .hero-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
-  .hero-chips a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 18px; box-sizing: border-box; background: rgba(255,255,255,.85); border: 1px solid rgba(255,255,255,.9); border-radius: 999px; color: var(--rt-ink); text-decoration: none; font-family: var(--rt-font-head); font-size: 14px; font-weight: 500; }
-  .hero-chips a:hover, .hero-chips a:focus-visible { border-color: var(--rt-slate); background: #fff; }
-  .hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; align-items: center; }
+  .hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; align-items: center; margin-top: 6px; }
   .btn-apply { display: inline-flex; align-items: center; min-height: 48px; padding: 0 26px; border: 1.5px solid var(--rt-ink); color: var(--rt-ink); background: rgba(255,255,255,.6); border-radius: var(--rt-radius-btn); text-decoration: none; font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; }
   .btn-apply:hover { background: #fff; }
   @media (max-width: 960px) {
