@@ -181,15 +181,18 @@
 </div>
 
 <section class="hero">
-  <div class="hero-media" aria-hidden="true">
-    <div class="hero-placeholder">
-      <svg class="fcan-hero" viewBox="0 0 139 96"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
+  <div class="hero-card">
+    <div class="hero-media" aria-hidden="true">
+      <div class="hero-placeholder">
+        <svg class="cnp cnp-1" viewBox="0 0 139 96"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
+        <svg class="cnp cnp-2" viewBox="0 0 139 96"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
+        <svg class="cnp cnp-3" viewBox="0 0 139 96"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
+      </div>
+      <div class="hero-yt" id="hero-yt-wrap"><div id="hero-yt"></div></div>
     </div>
-    <div class="hero-yt" id="hero-yt-wrap"><div id="hero-yt"></div></div>
-  </div>
-  <div class="hero-scrim" aria-hidden="true"></div>
-  <div class="hero-inner">
-    <div class="hero-panel">
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-content">
       <p class="eyebrow">Raintree International School</p>
       <h1>An international kindergarten in Bangkok built around nature, play and three languages</h1>
       <p class="hero-lede">British EYFS combined with a Reggio Emilia inspired approach, for children aged 1 to 6, in English, Thai and Mandarin.</p>
@@ -199,27 +202,7 @@
         <li><a href="/campus/raintree-international-school-bangna/">Bang Na <span class="badge">Opening August 2027</span></a></li>
       </ul>
       <div class="hero-ctas">
-        <span class="chalk-wrap">
-          <a class="btn-tour" href="/choose-campus-book-a-school-tour/">Book a School Tour</a>
-          <svg class="chalk-arrow" viewBox="0 0 74 70" aria-hidden="true">
-            <defs>
-              <filter id="chalk-grain" x="-30%" y="-30%" width="160%" height="160%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="7" result="n"/>
-                <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"/>
-              </filter>
-              <filter id="chalk-dusty" x="-40%" y="-40%" width="180%" height="180%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n2"/>
-                <feDisplacementMap in="SourceGraphic" in2="n2" scale="6"/>
-              </filter>
-            </defs>
-            <path class="halo" filter="url(#chalk-dusty)" stroke-opacity=".35" d="M63 6 C 70 14, 62 22, 54 17 C 46 12, 51 4, 59 7 C 67 11, 64 28, 55 40 C 48 49, 39 54, 28 57"/>
-            <path class="stroke c1" pathLength="1" filter="url(#chalk-grain)" d="M63 6 C 70 14, 62 22, 54 17 C 46 12, 51 4, 59 7 C 67 11, 64 28, 55 40 C 48 49, 39 54, 28 57"/>
-            <path class="stroke c2" pathLength="1" filter="url(#chalk-grain)" d="M38 60 L25 59 L31 48 M34 64 L22 61 L27 52"/>
-            <g class="dust" filter="url(#chalk-dusty)">
-              <circle cx="48" cy="30" r="1.1"/><circle cx="58" cy="22" r=".9"/><circle cx="40" cy="48" r="1.2"/><circle cx="30" cy="62" r=".8"/><circle cx="66" cy="12" r=".8"/>
-            </g>
-          </svg>
-        </span>
+        <a class="btn-tour" href="/choose-campus-book-a-school-tour/">Book a School Tour</a>
         <a class="btn-apply" href="#">Apply Now</a>
       </div>
     </div>

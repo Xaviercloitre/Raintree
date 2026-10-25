@@ -53,7 +53,7 @@
        Desktop only, never under reduced motion or data saver; the placeholder scene shows otherwise or while loading. */
     var START = 53, END = 80, VID = 'R0XAL3NyN40';
     var ytWrap = document.getElementById('hero-yt-wrap');
-    var hero = document.querySelector('.hero');
+    var hero = document.querySelector('.hero-card');
     var conn = navigator.connection || {};
     var wantsVideo = window.matchMedia('(min-width: 960px)').matches
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
