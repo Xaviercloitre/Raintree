@@ -35,15 +35,30 @@
     backdrop.addEventListener('click', closeSheet);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
-    /* Baby steps: big footprints appear in the background as you scroll (mobile) */
+    /* Baby steps: the child walks down the section as the parent scrolls (mobile).
+       Reveal follows scroll progress through the section, one print at a time,
+       and prints stay once made, like footprints. */
+    var stepsBg = document.querySelector('.baby-steps');
     var prints = document.querySelectorAll('.baby-steps svg');
-    if (prints.length && 'IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } });
-      }, { threshold: 0.2 });
-      prints.forEach(function (p) { io.observe(p); });
-    } else {
-      prints.forEach(function (p) { p.classList.add('seen'); });
+    if (stepsBg && prints.length) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        prints.forEach(function (p) { p.classList.add('seen'); });
+      } else {
+        var sec = stepsBg.parentElement, ticking = false;
+        var walk = function () {
+          ticking = false;
+          var r = sec.getBoundingClientRect();
+          var vh = window.innerHeight || 1;
+          var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
+          prints.forEach(function (p) {
+            if (progress >= parseFloat(p.getAttribute('data-t')) + 10) p.classList.add('seen');
+          });
+        };
+        var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        walk();
+      }
     }
 
     /* Day section: video loads only on tap, behind the poster, per the brief */
