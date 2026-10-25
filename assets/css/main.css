@@ -174,8 +174,11 @@
   .proof-inner .k { font-family: var(--rt-font-head); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); }
   .proof-inner .v { font-family: var(--rt-font-head); font-size: 16px; font-weight: 600; color: var(--rt-ink); line-height: 1.4; text-wrap: balance; }
   @media (max-width: 640px) {
-    .proof-inner { grid-template-columns: 1fr 1fr; padding-block: 30px 34px; gap: 20px 20px; }
-    .proof-inner .v { font-size: 15px; }
+    .proof-inner { display: block; padding-block: 26px 30px; background: #fff; border: 1px solid var(--rt-border); border-radius: var(--rt-radius-card); max-width: none; margin: 22px 16px 26px; padding: 6px 20px; }
+    .proof-inner li { border-left: 0; padding-left: 0; flex-direction: row; justify-content: space-between; align-items: baseline; gap: 16px; padding-block: 13px; }
+    .proof-inner li + li { border-top: 1px solid var(--rt-border); }
+    .proof-inner .k { flex: none; }
+    .proof-inner .v { font-size: 15px; text-align: right; text-wrap: initial; }
   }
 
   /* ---------- Our approach ---------- */
