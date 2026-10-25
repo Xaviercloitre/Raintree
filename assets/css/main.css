@@ -289,13 +289,29 @@
   /* ---------- Parent voices ---------- */
   .voices { background: var(--rt-canopy-tint); }
   .voices-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 72px; }
-  .voices h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 36px; }
-  .voice-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 0 0 36px; padding: 0; list-style: none; }
-  .voice-card { background: #fff; border: 1px solid var(--rt-border); border-radius: var(--rt-radius-card); padding: 28px; display: flex; flex-direction: column; gap: 14px; }
-  .voice-card .mark { font-family: var(--rt-font-head); font-size: 42px; line-height: 1; color: var(--rt-canopy); }
-  .voice-card blockquote { margin: 0; font-size: 16px; line-height: 1.65; color: var(--rt-ink); flex: 1; }
-  .voice-card figcaption { font-size: 14px; color: var(--rt-slate); }
-  .voice-card figcaption strong { display: block; font-family: var(--rt-font-head); font-weight: 600; color: var(--rt-ink); font-size: 14px; }
+  .voices h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 24px; text-align: center; }
+  .voice-carousel { position: relative; max-width: 860px; margin: 0 auto 28px; }
+  .voice-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .voice-track::-webkit-scrollbar { display: none; }
+  .voice-slide { flex: 0 0 100%; scroll-snap-align: center; padding: 8px 12px 4px; box-sizing: border-box; min-width: 0; }
+  .voice-inner { position: relative; text-align: center; padding: 34px 20px 6px; }
+  .voice-inner .mark { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); font-family: var(--rt-font-head); font-size: 76px; line-height: 1; color: var(--rt-canopy); pointer-events: none; }
+  .voice-inner blockquote { position: relative; margin: 0 auto 18px; font-size: 22px; line-height: 1.55; color: var(--rt-ink); max-width: 54ch; text-wrap: balance; }
+  .voice-inner figcaption { font-size: 15px; color: var(--rt-slate); }
+  .voice-inner figcaption strong { display: block; font-family: var(--rt-font-head); font-weight: 600; color: var(--rt-ink); font-size: 15px; margin-bottom: 2px; }
+  .voice-nav { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 18px; }
+  .voice-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rt-border); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--rt-ink); }
+  .voice-nav button:hover { background: var(--rt-canopy-tint); }
+  .voice-nav button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 2px; }
+  .voice-nav svg { width: 16px; height: 16px; }
+  .voice-nav svg path { stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .voice-dots { display: flex; gap: 8px; }
+  .voice-dots button { width: 10px; height: 10px; min-width: 0; padding: 0; border-radius: 50%; border: 0; background: var(--rt-canopy); cursor: pointer; }
+  .voice-dots button[aria-current="true"] { background: var(--rt-slate); }
+  @media (max-width: 960px) {
+    .voice-inner blockquote { font-size: 19px; }
+  }
+
   .voices-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 32px; }
   .press { margin: 0; color: var(--rt-slate); font-size: 14px; }
   .press strong { color: var(--rt-ink); font-weight: 600; }
@@ -303,7 +319,6 @@
   .voices-cta a:hover { border-color: var(--rt-ink); }
   @media (max-width: 960px) {
     .voices-inner { padding-block: 48px; }
-    .voice-cards { grid-template-columns: 1fr; }
   }
 
   /* ---------- How admissions work ---------- */

@@ -342,29 +342,36 @@
 <section class="voices">
   <div class="voices-inner">
     <h2>What parents say</h2>
-    <ul class="voice-cards">
-      <li class="voice-card">
-        <span class="mark" aria-hidden="true">&ldquo;</span>
-        <figure style="display:contents">
-          <blockquote>We have watched our boys thrive at Raintree.</blockquote>
-          <figcaption><strong>Laura and Chris Burkett</strong> Fin's and Lockie's parents</figcaption>
-        </figure>
-      </li>
-      <li class="voice-card">
-        <span class="mark" aria-hidden="true">&ldquo;</span>
-        <figure style="display:contents">
-          <blockquote>The school has a good &ldquo;Fengshui&rdquo; feel. Also the personal touch was very pleasing.</blockquote>
-          <figcaption><strong>Stefan and Elly Magnus</strong> Julius's parents</figcaption>
-        </figure>
-      </li>
-      <li class="voice-card">
-        <span class="mark" aria-hidden="true">&ldquo;</span>
-        <figure style="display:contents">
-          <blockquote>You have provided Jay and Jett with so much care, kindness, and most of, a fun place to grow and develop.</blockquote>
-          <figcaption><strong>Jib and Jack</strong> Jett's and Jay's parents</figcaption>
-        </figure>
-      </li>
-    </ul>
+    <div class="voice-carousel">
+      <div class="voice-track" id="voice-track" aria-roledescription="carousel" aria-label="Parent testimonials" tabindex="0">
+        <div class="voice-slide" role="group" aria-label="Testimonial 1 of 3">
+          <figure class="voice-inner">
+            <span class="mark" aria-hidden="true">&ldquo;</span>
+            <blockquote>We have watched our boys thrive at Raintree.</blockquote>
+            <figcaption><strong>Laura and Chris Burkett</strong> Fin's and Lockie's parents</figcaption>
+          </figure>
+        </div>
+        <div class="voice-slide" role="group" aria-label="Testimonial 2 of 3">
+          <figure class="voice-inner">
+            <span class="mark" aria-hidden="true">&ldquo;</span>
+            <blockquote>The school has a good &ldquo;Fengshui&rdquo; feel. Also the personal touch was very pleasing.</blockquote>
+            <figcaption><strong>Stefan and Elly Magnus</strong> Julius's parents</figcaption>
+          </figure>
+        </div>
+        <div class="voice-slide" role="group" aria-label="Testimonial 3 of 3">
+          <figure class="voice-inner">
+            <span class="mark" aria-hidden="true">&ldquo;</span>
+            <blockquote>You have provided Jay and Jett with so much care, kindness, and most of, a fun place to grow and develop.</blockquote>
+            <figcaption><strong>Jib and Jack</strong> Jett's and Jay's parents</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="voice-nav">
+        <button type="button" id="voice-prev" aria-label="Previous testimonial"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13"/></svg></button>
+        <div class="voice-dots" id="voice-dots" aria-hidden="true"></div>
+        <button type="button" id="voice-next" aria-label="Next testimonial"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13"/></svg></button>
+      </div>
+    </div>
     <div class="voices-foot">
       <p class="press">As featured in <strong>Amarin Baby and Kids</strong>, <strong>PrestigeOnline</strong> and <strong>The Thaiger</strong></p>
       <p class="voices-cta" style="margin:0"><a href="/testimonials/">Read more stories <span class="arrow" aria-hidden="true">&rarr;</span></a></p>

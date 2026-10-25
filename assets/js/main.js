@@ -35,6 +35,31 @@
     backdrop.addEventListener('click', closeSheet);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
+    /* Parent voices carousel */
+    var track = document.getElementById('voice-track');
+    if (track) {
+      var slides = track.querySelectorAll('.voice-slide');
+      var dotsBox = document.getElementById('voice-dots');
+      slides.forEach(function (_, i) {
+        var d = document.createElement('button');
+        d.type = 'button';
+        d.addEventListener('click', function () { go(i); });
+        dotsBox.appendChild(d);
+      });
+      var dots = dotsBox.querySelectorAll('button');
+      function current() { return Math.round(track.scrollLeft / track.clientWidth); }
+      function paint() { var c = current(); dots.forEach(function (d, i) { d.setAttribute('aria-current', String(i === c)); }); }
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: i * track.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+      document.getElementById('voice-prev').addEventListener('click', function () { go(current() - 1); });
+      document.getElementById('voice-next').addEventListener('click', function () { go(current() + 1); });
+      var vt;
+      track.addEventListener('scroll', function () { clearTimeout(vt); vt = setTimeout(paint, 80); }, { passive: true });
+      paint();
+    }
+
     /* Baby steps: the child walks down the section as the parent scrolls (mobile).
        Each print appears when the scroll reaches it and fades again once the
        walk has moved on, so the trail follows the scroll both ways. */
