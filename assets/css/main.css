@@ -307,7 +307,8 @@
   .voice-carousel { position: relative; max-width: 860px; margin: 0 auto 28px; }
   .voice-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .voice-track::-webkit-scrollbar { display: none; }
-  .voice-slide { flex: 0 0 100%; scroll-snap-align: center; padding: 8px 12px 4px; box-sizing: border-box; min-width: 0; }
+  .voice-slide { flex: 0 0 100%; scroll-snap-align: center; padding: 8px 12px 4px; box-sizing: border-box; min-width: 0; display: flex; align-items: center; justify-content: center; }
+  .voice-inner { width: 100%; }
   .voice-inner { position: relative; text-align: center; padding: 34px 20px 6px; }
   .voice-inner .mark { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); font-family: var(--rt-font-head); font-size: 76px; line-height: 1; color: var(--rt-canopy); pointer-events: none; }
   .voice-inner blockquote { position: relative; margin: 0 auto 18px; font-size: 22px; line-height: 1.55; color: var(--rt-ink); max-width: 54ch; text-wrap: balance; }
@@ -323,7 +324,9 @@
   .voice-dots button { width: 10px; height: 10px; min-width: 0; padding: 0; border-radius: 50%; border: 0; background: var(--rt-canopy); cursor: pointer; }
   .voice-dots button[aria-current="true"] { background: var(--rt-slate); }
   @media (max-width: 960px) {
-    .voice-inner blockquote { font-size: 19px; }
+    .voice-inner { padding: 26px 8px 0; }
+    .voice-inner blockquote { font-size: 19px; margin-bottom: 14px; }
+    .voice-nav { margin-top: 10px; }
   }
 
   .voices-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 32px; }
