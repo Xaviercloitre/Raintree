@@ -274,7 +274,7 @@
       }
     };
     var loop = function () {
-      current += (target - current) * 0.16;
+      current += (target - current) * 0.28;
       if (Math.abs(target - current) < 0.0005) current = target;
       draw(current);
       if (current !== target && visible) requestAnimationFrame(loop); else running = false;
