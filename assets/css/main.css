@@ -275,7 +275,8 @@
     .stage-card { flex: 0 0 min(78%, 320px); scroll-snap-align: start; }
     .stage-card:hover, .stage-card:focus-within { transform: none; box-shadow: none; }
     .stage-dots { display: flex; justify-content: center; gap: 4px; margin-top: 14px; }
-    .stage-dots button { width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+    .stage-dots button { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; min-width: 0; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: inherit; font: inherit; line-height: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+    .stage-dots button::before { flex: none; display: block; }
     .stage-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--rt-slate); opacity: .35; transition: width .2s ease, opacity .2s ease; }
     .stage-dots button[aria-current="true"]::before { width: 22px; opacity: 1; background: var(--rt-ink); }
     .stage-dots button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 0; border-radius: 6px; }
@@ -430,7 +431,7 @@
   .voice-nav svg { width: 16px; height: 16px; }
   .voice-nav svg path { stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .voice-dots { display: flex; gap: 8px; }
-  .voice-dots button { width: 10px; height: 10px; min-width: 0; padding: 0; border-radius: 50%; border: 0; background: var(--rt-canopy); cursor: pointer; }
+  .voice-dots button { -webkit-appearance: none; appearance: none; box-shadow: none; -webkit-tap-highlight-color: transparent; width: 10px; height: 10px; min-width: 0; padding: 0; border-radius: 50%; border: 0; background: var(--rt-canopy); cursor: pointer; }
   .voice-dots button[aria-current="true"] { background: var(--rt-slate); }
   @media (max-width: 960px) {
     .voice-inner { padding: 26px 8px 0; }
