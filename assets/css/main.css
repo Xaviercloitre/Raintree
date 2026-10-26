@@ -174,6 +174,9 @@
   .proof-inner li { border-left: 2px solid var(--rt-canopy); padding-left: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .proof-inner .k { font-family: var(--rt-font-head); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); }
   .proof-inner .v { font-family: var(--rt-font-head); font-size: 16px; font-weight: 600; color: var(--rt-ink); line-height: 1.4; text-wrap: balance; }
+  .proof-inner .v a { color: inherit; text-decoration: none; }
+  .proof-inner .v a:hover, .proof-inner .v a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+  .proof-inner abbr { text-decoration: none; }
   @media (max-width: 640px) {
     .proof-inner { display: flex; overflow-x: auto; scroll-snap-type: x proximity; gap: 0; padding-block: 26px 28px; scrollbar-width: none; -webkit-overflow-scrolling: touch; mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%); }
     .proof-inner::-webkit-scrollbar { display: none; }
