@@ -291,7 +291,9 @@
   .ht-card { background: var(--rt-canopy-tint); border-radius: var(--rt-radius-card); padding: 24px 28px; margin-bottom: 22px; }
   .ht-card .ht-name { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; color: var(--rt-ink); margin: 0 0 2px; }
   .ht-card .ht-creds { font-size: 14px; color: var(--rt-slate); margin: 0 0 12px; }
-  .ht-card .quote-slot { font-size: 15px; color: var(--rt-slate); margin: 0; font-style: italic; }
+  .ht-card .quote-slot { font-size: 15px; line-height: 1.6; color: var(--rt-ink); margin: 0; font-style: italic; }
+  .ht-card .quote-slot p { margin: 0 0 10px; }
+  .ht-card .quote-slot p:last-child { margin-bottom: 0; }
   .ht-card .quote-slot .tbc { font-style: normal; }
   .teachers-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
   .teachers-cta a:hover { border-color: var(--rt-ink); }
