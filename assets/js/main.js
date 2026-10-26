@@ -60,6 +60,18 @@
       paint();
     }
 
+
+    /* Footprints in wet sand: a print presses in when the walk reaches it, holds for a while,
+       then is slowly washed away (fading, softening and spreading) as the walk moves on.
+       Fully tied to the scroll, so scrolling back brings the prints back. */
+    var washPrint = function (p, since, maxOp) {
+      var inF = Math.max(0, Math.min(1, since / 6));                  /* quick press-in */
+      var wash = Math.max(0, Math.min(1, (since - 22) / 40));         /* long, slow wash-out */
+      var op = maxOp * inF * (1 - wash);
+      p.style.opacity = op.toFixed(3);
+      p.style.filter = wash > 0 ? 'blur(' + (wash * 2.2).toFixed(2) + 'px)' : '';
+      p.style.transform = 'translate(' + (wash * 4).toFixed(1) + 'px,' + ((1 - inF) * 6).toFixed(1) + 'px) scale(' + (0.94 + 0.06 * inF + 0.08 * wash).toFixed(3) + ')';
+    };
     /* Desktop baby steps: the child walks from step 1 to step 3 as the parent scrolls.
        Each print appears when the scroll reaches it and stays; scrolling back above it hides it again. */
     var trail = document.querySelector('.steps-trail');
@@ -77,7 +89,7 @@
           var progress = (vh * 0.9 - r.top) / (vh * 0.6) * 100;
           tprints.forEach(function (p) {
             var at = parseFloat(p.style.left);
-            p.classList.toggle('seen', progress >= at);
+            washPrint(p, progress - at, .42);
           });
         };
         var tScroll = function () { if (!tTick) { tTick = true; requestAnimationFrame(tWalk); } };
@@ -104,7 +116,7 @@
           var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
           prints.forEach(function (p) {
             var t = parseFloat(p.getAttribute('data-t'));
-            p.classList.toggle('seen', progress >= t + 8);
+            washPrint(p, progress - (t + 8), .55);
           });
         };
         var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
