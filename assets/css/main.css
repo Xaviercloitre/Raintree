@@ -403,8 +403,10 @@
   .step h3 { font-family: var(--rt-font-head); font-weight: 600; font-size: 20px; color: var(--rt-ink); margin: 0 0 8px; }
   .step p { margin: 0; color: var(--rt-ink); opacity: .85; font-size: 15px; line-height: 1.6; max-width: 34ch; }
   .admissions-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-  .adm-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
-  .adm-link:hover { border-color: var(--rt-ink); }
+  /* Chalk underline taken from the logo wordmark */
+  .adm-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; padding-bottom: 10px; background: url("/assets/img/chalk-underline.png") left bottom / 100% 7px no-repeat; transition: background-size .2s ease; }
+  .adm-link:hover { background-size: 100% 10px; }
+  @media (prefers-reduced-motion: reduce) { .adm-link { transition: none; } }
   @media (max-width: 960px) {
     .admissions-inner { padding-block: 48px; }
     .steps { grid-template-columns: 1fr; gap: 0; }
