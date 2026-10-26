@@ -187,6 +187,16 @@
      JS adds .deck to the section when motion is allowed. The section grows tall, the heading
      and the deck stay pinned, and each card lifts away to reveal the next as the parent scrolls. */
   .deck-hint { display: none; }
+  /* Desktop, after the scroll animation has played once: unpinned, click to flip */
+  .approach.deck.deck-done .approach-inner { height: auto; padding-block: 88px; align-items: center; }
+  .approach.deck.deck-done .approach-head { position: static; height: auto; padding-top: 0; }
+  .approach.deck.deck-done .pillars-stage { position: static; height: auto; padding-top: 0; display: block; }
+  .approach.deck.deck-done .pillars { margin: 0 auto; cursor: pointer; }
+  .approach.deck.deck-done .pillars:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 8px; border-radius: var(--rt-radius-card); }
+  .approach.deck.deck-done .deck-hint { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 22px auto 0; font-size: 13px; color: var(--rt-slate); }
+  .approach.deck.deck-done .deck-hint .dh-dots { display: inline-flex; gap: 5px; }
+  .approach.deck.deck-done .deck-hint .dh-dots i { width: 7px; height: 7px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
+  .approach.deck.deck-done .deck-hint .dh-dots i.on { width: 18px; background: var(--rt-slate); }
   .approach.deck .approach-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; height: calc(100vh + 50vh); height: calc(100svh + 50svh); padding-block: 0; }
   .approach.deck .approach-head { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; margin: 0; padding-top: 80px; }
   .approach.deck .pillars-stage { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; align-items: center; justify-content: center; padding-top: 80px; }

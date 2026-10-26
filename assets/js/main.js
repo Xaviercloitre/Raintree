@@ -253,7 +253,8 @@
     var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
     var ease = function (x) { return x * x * (3 - 2 * x); };
     var vh = document.documentElement.clientHeight, lastW = window.innerWidth;
-    var target = 0, current = 0, running = false, visible = false, idx = 0, introDone = false;
+    var target = 0, current = 0, running = false, visible = false, idx = 0, introDone = false, done = false;
+    var tapMode = function () { return mq.matches || done; };
 
     /* hint under the mobile deck: "Tap to see the next" and three dots */
     var hint = document.createElement('p');
@@ -270,14 +271,14 @@
         var leave = i === N ? 0 : ease(clamp(p - i));
         var rot = rest * (1 - come) - 10 * leave;
         var y = -112 * leave, x = -14 * leave;
-        if (mq.matches) { y = -18 * leave; x = -118 * leave; rot = rest * (1 - come) - 14 * leave; }
+        if (tapMode()) { y = -18 * leave; x = -118 * leave; rot = rest * (1 - come) - 14 * leave; }
         cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg)';
         cards[i].style.opacity = (1 - clamp((leave - .55) / .45)).toFixed(3);
-        cards[i].setAttribute('aria-hidden', mq.matches && i !== Math.round(p) ? 'true' : 'false');
+        cards[i].setAttribute('aria-hidden', tapMode() && i !== Math.round(p) ? 'true' : 'false');
       }
     };
     var loop = function () {
-      current += (target - current) * (mq.matches ? 0.2 : 0.42);
+      current += (target - current) * (tapMode() ? 0.2 : 0.42);
       if (Math.abs(target - current) < 0.0005) current = target;
       draw(current);
       if (current !== target) requestAnimationFrame(loop); else running = false;
@@ -286,9 +287,24 @@
 
     /* desktop: scroll position drives the deck */
     var measure = function () {
-      if (mq.matches) return;
+      if (tapMode()) return;
       var box = inner.getBoundingClientRect();
       target = clamp(-box.top / Math.max(1, box.height - vh)) * N;
+      /* once the parent has scrolled past the deck, it stops being pinned and becomes tap-to-flip */
+      if (box.bottom < vh * 0.35) finish();
+    };
+    var finish = function () {
+      if (done) return;
+      var before = inner.getBoundingClientRect().height;
+      done = true;
+      sec.classList.add('deck-done');
+      var after = inner.getBoundingClientRect().height;
+      var html = document.documentElement, sb = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      window.scrollBy(0, after - before);   /* keep what is on screen exactly where it was */
+      html.style.scrollBehavior = sb;
+      mobileSetup();
+      idx = 0; current = 0; setIdx(0); draw(0);
     };
 
     /* mobile: tap or swipe */
@@ -296,11 +312,12 @@
       idx = (k + cards.length) % cards.length;
       target = idx;
       dots.forEach(function (d, i) { d.classList.toggle('on', i === idx); });
-      hintText.textContent = idx === N ? 'Tap to start again' : 'Tap the card to see the next';
+      var verb = mq.matches ? 'Tap' : 'Click';
+      hintText.textContent = idx === N ? verb + ' to start again' : verb + ' the card to see the next';
       kick();
     };
     var mobileSetup = function () {
-      if (mq.matches) {
+      if (tapMode()) {
         deck.setAttribute('role', 'button');
         deck.setAttribute('tabindex', '0');
         deck.setAttribute('aria-label', 'Show the next card');
@@ -311,9 +328,9 @@
         measure(); kick();
       }
     };
-    deck.addEventListener('click', function () { if (mq.matches) setIdx(idx + 1); });
+    deck.addEventListener('click', function () { if (tapMode()) setIdx(idx + 1); });
     deck.addEventListener('keydown', function (e) {
-      if (!mq.matches) return;
+      if (!tapMode()) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIdx(idx + 1); }
       if (e.key === 'ArrowRight') setIdx(idx + 1);
       if (e.key === 'ArrowLeft') setIdx(idx - 1);
@@ -321,7 +338,7 @@
     var sx = 0, sy = 0, swiped = false;
     deck.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true });
     deck.addEventListener('touchend', function (e) {
-      if (!mq.matches) return;
+      if (!tapMode()) return;
       var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4) {
         swiped = true; setIdx(idx + (dx < 0 ? 1 : -1));
@@ -336,7 +353,7 @@
         if (visible) { measure(); kick(); }
       }, { rootMargin: '0px 0px -15% 0px' }).observe(deck);
     }
-    window.addEventListener('scroll', function () { if (!mq.matches && visible) { measure(); kick(); } }, { passive: true });
+    window.addEventListener('scroll', function () { if (!tapMode() && (visible || inner.getBoundingClientRect().bottom < vh)) { measure(); kick(); } }, { passive: true });
     window.addEventListener('resize', function () {
       if (window.innerWidth !== lastW) { lastW = window.innerWidth; vh = document.documentElement.clientHeight; mobileSetup(); }
     });
