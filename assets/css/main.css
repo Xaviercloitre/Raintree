@@ -221,7 +221,7 @@
   @media (max-width: 960px) {
     .approach.deck .approach-inner { grid-template-columns: 1fr; gap: 0; height: auto; padding-top: 48px; }
     .approach.deck .approach-head { position: static; height: auto; padding-top: 0; margin-bottom: 8px; }
-    .approach.deck .pillars-stage { height: calc(100vh + 110vh); height: calc(100svh + 110svh); align-items: flex-start; padding-top: 0; position: relative; }
+    .approach.deck .pillars-stage { height: calc(100vh + 110vh); height: calc(100svh + 110svh); align-items: flex-start; padding-top: 0; padding-bottom: 64px; position: relative; }
     /* Sits between the floating header and the sticky mobile bar, whatever the browser chrome does */
     .approach.deck .pillars { position: sticky; top: 92px; width: min(100%, 380px); aspect-ratio: auto; height: clamp(300px, calc(100svh - 230px), 400px); margin: 20px auto 0; }
     .approach.deck .pillar { padding: 28px 26px 30px; }
