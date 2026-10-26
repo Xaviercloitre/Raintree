@@ -281,8 +281,7 @@
   .rhythm .t { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; color: var(--rt-ink); font-variant-numeric: tabular-nums; }
   .rhythm .d { font-size: 15px; color: var(--rt-ink); opacity: .85; }
   .day-link { margin: 0; }
-  .day-link a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
-  .day-link a:hover { border-color: var(--rt-ink); }
+  .day-link a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; }
   .player { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: var(--rt-radius-card); overflow: hidden; background: linear-gradient(150deg, #D8EDF5 0%, #BBE0EC 70%, #A9D6E5 100%); box-shadow: 0 24px 48px rgba(46,53,64,.14); }
   /* The current poster file has white bands baked into its left and right edges; this crops them until a clean export replaces it */
   .player img { transform: scale(1.145) translateX(1.76%); }
@@ -321,11 +320,10 @@
   .ht-quote p { margin: 0 0 16px; }
   .ht-quote p:last-child { margin-bottom: 0; }
   .ht-feature figcaption { display: flex; flex-direction: column; gap: 6px; }
-  .ht-name { font-family: var(--rt-font-head); font-weight: 600; font-size: 19px; color: var(--rt-ink); align-self: flex-start; border-bottom: 3px solid var(--rt-canopy); padding-bottom: 4px; margin-bottom: 4px; }
+  .ht-name { font-family: var(--rt-font-head); font-weight: 600; font-size: 19px; color: var(--rt-ink); align-self: flex-start; margin-bottom: 4px; }
   .ht-role { font-family: var(--rt-font-head); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); }
   .ht-creds { font-size: 15px; color: var(--rt-ink); }
-  .ht-creds a { color: var(--rt-ink); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); }
-  .ht-creds a:hover, .ht-creds a:focus-visible { border-color: var(--rt-ink); }
+  .ht-creds a { color: var(--rt-ink); font-weight: 600; text-decoration: none; }
   @media (max-width: 960px) {
     .teachers-inner { padding-block: 56px; }
     .teachers-head { margin-bottom: 36px; }
@@ -365,8 +363,7 @@
   .voices-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 32px; }
   .press { margin: 0; color: var(--rt-slate); font-size: 14px; }
   .press strong { color: var(--rt-ink); font-weight: 600; }
-  .voices-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
-  .voices-cta a:hover { border-color: var(--rt-ink); }
+  .voices-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; }
   @media (max-width: 960px) {
     .voices-inner { padding-block: 48px; }
   }
@@ -403,7 +400,6 @@
   .step h3 { font-family: var(--rt-font-head); font-weight: 600; font-size: 20px; color: var(--rt-ink); margin: 0 0 8px; }
   .step p { margin: 0; color: var(--rt-ink); opacity: .85; font-size: 15px; line-height: 1.6; max-width: 34ch; }
   .admissions-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-  /* Chalk underline taken from the logo wordmark */
   .adm-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; padding-bottom: 10px; background: url("/assets/img/chalk-underline.png") left bottom / 100% 7px no-repeat; transition: background-size .2s ease; }
   .adm-link:hover { background-size: 100% 10px; }
   @media (prefers-reduced-motion: reduce) { .adm-link { transition: none; } }
@@ -508,14 +504,13 @@
   .footer-campuses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 32px; margin-bottom: 44px; }
   .fc-card { display: flex; flex-direction: column; gap: 7px; }
   .fc-card h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; margin: 0 0 2px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-  .fc-card h2 a { color: var(--rt-ink); text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 3px; }
-  .fc-card h2 a:hover, .fc-card h2 a:focus-visible { border-color: var(--rt-slate); }
+  .fc-card h2 a { color: var(--rt-ink); text-decoration: none; }
   .fc-card p { margin: 0; color: var(--rt-slate); font-size: 14px; line-height: 1.55; }
   .fc-card .fc-phone { color: var(--rt-ink); text-decoration: none; font-size: 15px; font-variant-numeric: tabular-nums; padding-block: 4px; align-self: flex-start; }
   .fc-card .fc-phone:hover { text-decoration: underline; text-underline-offset: 3px; }
   .fc-card .fc-email { color: var(--rt-ink); text-decoration: none; font-size: 14px; padding-block: 4px; align-self: flex-start; overflow-wrap: anywhere; }
   .fc-card .fc-email:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .fc-card .fc-link { color: var(--rt-ink); text-decoration: underline; text-underline-offset: 3px; font-size: 14px; padding-block: 2px; align-self: flex-start; }
+  .fc-card .fc-link { color: var(--rt-ink); font-size: 14px; padding-top: 2px; align-self: flex-start; }
 
   .footer-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px 32px; margin-bottom: 44px; padding-top: 36px; border-top: 1px solid var(--rt-border); }
   .fn-col h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--rt-slate); margin: 0 0 10px; }
@@ -539,4 +534,23 @@
     .footer-campuses { grid-template-columns: 1fr; gap: 24px; }
     .footer-nav { grid-template-columns: 1fr 1fr; gap: 24px; }
     .footer-inner { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+  }
+
+  /* ---------- Chalk underline, taken from the logo wordmark ----------
+     One treatment for every underlined text link and the Head Teacher's name. */
+  .approach-cta a, .day-link a, .voices-cta a, .adm-link,
+  .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a {
+    text-decoration: none;
+    background: url("/assets/img/chalk-underline.png") left bottom / 100% 7px no-repeat;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    transition: background-size .2s ease;
+  }
+  .approach-cta a, .day-link a, .voices-cta a, .adm-link { padding-bottom: 10px; }
+  .ht-name { padding-bottom: 9px; }
+  .fc-card h2 a { padding-bottom: 8px; }
+  .ht-creds a, .faq .answer a, .fc-card .fc-link { padding-bottom: 5px; background-size: 100% 5px; }
+  .approach-cta a:hover, .day-link a:hover, .voices-cta a:hover, .adm-link:hover, .fc-card h2 a:hover { background-image: url("/assets/img/chalk-underline.png"); background-size: 100% 10px; }
+  .ht-creds a:hover, .faq .answer a:hover, .fc-card .fc-link:hover { background-size: 100% 7px; }
+  @media (prefers-reduced-motion: reduce) {
+    .approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a { transition: none; }
   }
