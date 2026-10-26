@@ -680,6 +680,29 @@
     .hero .hero-lede { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
   }
 
+  /* ---------- Spaces: bento gallery of the facilities ---------- */
+  .spaces { background: var(--rt-paper); }
+  .spaces-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 88px; }
+  .spaces-head { max-width: 640px; margin-bottom: 32px; }
+  .spaces h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.3; text-wrap: balance; color: var(--rt-ink); margin: 0 0 12px; }
+  .spaces-head p { font-size: 17px; line-height: 1.6; color: var(--rt-ink); margin: 0; }
+  .bento { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 210px; gap: 14px;
+    grid-template-areas: "a a b c" "a a b d" "e e f g"; }
+  .g-a { grid-area: a; } .g-b { grid-area: b; } .g-c { grid-area: c; } .g-d { grid-area: d; } .g-e { grid-area: e; } .g-f { grid-area: f; } .g-g { grid-area: g; }
+  .bento-tile { position: relative; border-radius: var(--rt-radius-card); overflow: hidden; background: linear-gradient(150deg, #EAF5F9 10%, #D8EDF5 55%, #BBE0EC 100%); }
+  .bento-tile figure { margin: 0; height: 100%; }
+  .bento-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+  .bento-tile:hover img { transform: scale(1.04); }
+  .bento-tile figcaption { position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 999px; background: rgba(251,250,247,.92); font-family: var(--rt-font-head); font-weight: 600; font-size: 13px; color: var(--rt-ink); box-shadow: 0 4px 14px rgba(46,53,64,.12); }
+  .bento-tile.is-missing figcaption { background: #fff; }
+  @media (prefers-reduced-motion: reduce) { .bento-tile img { transition: none; } .bento-tile:hover img { transform: none; } }
+  @media (max-width: 960px) {
+    .spaces-inner { padding-block: 16px 56px; }
+    .spaces h2 { font-size: 26px; }
+    .bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; gap: 10px; grid-template-areas: "a a" "a a" "b c" "b d" "e e" "f g"; }
+    .bento-tile figcaption { font-size: 12px; left: 8px; bottom: 8px; padding: 5px 10px; }
+  }
+
   /* ---------- Footer ---------- */
   .site-footer { background: transparent; margin-top: 64px; }
   .footer-wave { display: block; width: 100%; height: 48px; margin-bottom: -1px; }
