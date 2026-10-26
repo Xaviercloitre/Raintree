@@ -60,6 +60,19 @@
       paint();
     }
 
+    /* Desktop baby steps: the trail walks once from step 1 to step 3 when the steps come into view */
+    var trail = document.querySelector('.steps-trail');
+    if (trail) {
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        trail.classList.add('walk');
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { if (en.isIntersecting) { trail.classList.add('walk'); io.disconnect(); } });
+        }, { threshold: 0.6 });
+        io.observe(trail.parentElement);
+      }
+    }
+
     /* Baby steps: the child walks down the section as the parent scrolls (mobile).
        Each print appears when the scroll reaches it and fades again once the
        walk has moved on, so the trail follows the scroll both ways. */
