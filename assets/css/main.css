@@ -455,7 +455,7 @@
   .baby-steps { display: none; }
   @media (max-width: 960px) {
     .baby-steps { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-    .baby-steps svg { position: absolute; width: 24px; height: auto; max-width: none; opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .7s ease, transform .7s ease; }
+    .baby-steps svg { position: absolute; width: 32px; height: auto; max-width: none; opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .7s ease, transform .7s ease; }
     .baby-steps svg.seen { opacity: .55; transform: none; }
     .baby-steps svg path, .baby-steps svg ellipse { fill: var(--rt-canopy); }
   }
