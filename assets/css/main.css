@@ -223,6 +223,9 @@
   .ph svg path { fill: #fff; }
   .ph .shot { position: relative; margin: 0 0 12px 14px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-family: var(--rt-font-head); font-weight: 600; color: var(--rt-slate); background: rgba(255,255,255,.8); border-radius: 999px; padding: 4px 10px; }
   .stage-card .stage-age { margin-top: 6px; }
+  .stage-tags { display: flex; flex-wrap: wrap; gap: 6px; align-self: flex-start; }
+  .stage-tags .stage-age { margin-top: 6px; }
+  .stage-age.stage-mixed { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rt-canopy); }
   .stage-card:hover, .stage-card:focus-within { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(46,53,64,.10); }
   @media (prefers-reduced-motion: reduce) { .stage-card { transition: none; } .stage-card:hover, .stage-card:focus-within { transform: none; } }
   .stage-age { align-self: flex-start; font-family: var(--rt-font-head); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--rt-ink); background: var(--rt-canopy); border-radius: 999px; padding: 5px 12px; }
