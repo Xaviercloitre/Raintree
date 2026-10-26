@@ -186,7 +186,7 @@
 
   /* Chalk underlines: draw each one in once, the first time it comes into view */
   (function () {
-    var sel = '.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card .fc-link, .faq .answer a';
+    var sel = '.approach-cta a, .day-link a, .vc-more, .adm-link, .ht-name, .ht-creds a, .fc-card .fc-link, .faq .answer a';
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var els = document.querySelectorAll(sel);
     if (!els.length) return;
@@ -413,5 +413,20 @@
       f.addEventListener('focus', function () { clearTimeout(timer); timer = null; f.setAttribute('placeholder', base); });
       f.addEventListener('blur', start);
       start();
+    });
+  })();
+
+  /* Tour buttons across the page lead to the tour form; a campus button preselects its campus */
+  (function () {
+    var card = document.querySelector('.tour-card');
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href="#book-a-tour"]');
+      if (!a || !card) return;
+      var c = a.getAttribute('data-campus');
+      if (c) { var r = document.querySelector('input[name="campus"][value="' + c + '"]'); if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); } }
+      card.classList.remove('is-arrived'); void card.offsetWidth; card.classList.add('is-arrived');
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'tour_cta_click', cta_location: (a.closest('section, header, .mobile-bar, footer') || {}).className || 'page', campus: c || '' });
+      setTimeout(function () { var f = document.getElementById('tj-child'); if (f) f.focus({ preventScroll: true }); }, 700);
     });
   })();
