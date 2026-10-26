@@ -170,11 +170,15 @@
 
   /* ---------- Proof strip ---------- */
   .proof { background: var(--rt-paper); }
-  .proof-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 44px; display: flex; justify-content: space-between; gap: 28px; list-style: none; }
-  .proof-inner > li { flex: 0 0 auto; }
-  .proof-inner .v { white-space: nowrap; font-size: clamp(14px, 1.25vw, 16px) !important; }
-  @media (max-width: 1100px) { .proof-inner { gap: 18px; } .proof-inner li { padding-left: 12px; } }
-  .proof-inner li { border-left: 2px solid var(--rt-canopy); padding-left: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .proof-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px 32px; list-style: none; }
+  /* Desktop: all facts on one line */
+  @media (min-width: 961px) {
+    .proof-inner { display: flex; justify-content: space-between; gap: 28px; }
+    .proof-inner > li { flex: 0 0 auto; }
+    .proof .proof-inner .v { white-space: nowrap; font-size: clamp(14px, 1.25vw, 16px); }
+  }
+  @media (min-width: 961px) and (max-width: 1100px) { .proof-inner { gap: 12px; } .proof-inner li { padding-left: 10px; } .proof .proof-inner .v { font-size: 13.5px; } }
+  .proof-inner li { position: relative; border-left: 2px solid var(--rt-canopy); padding-left: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .proof-inner .k { font-family: var(--rt-font-head); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); }
   .proof-inner .v { font-family: var(--rt-font-head); font-size: 16px; font-weight: 600; color: var(--rt-ink); line-height: 1.4; text-wrap: balance; }
   .proof-inner .v a { color: inherit; text-decoration: none; }
@@ -188,7 +192,7 @@
   }
 
   /* ---------- Our approach ---------- */
-  .approach { background: var(--rt-paper); }
+  .approach { background: var(--rt-paper); overflow-x: clip; }
   .approach-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 72px; }
   .approach-head { max-width: 640px; margin-bottom: 40px; }
   .approach h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 14px; }
@@ -632,3 +636,13 @@
   }
 
   .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  @media (min-width: 961px) and (max-width: 1180px) {
+    .navitem > a { padding: 10px 9px; font-size: 14px; }
+    .mainrow-inner { gap: 14px; padding-left: 20px; }
+    .mainrow .logo .wordmark { height: 38px; width: auto; }
+    .mainrow .logo .canopy { height: 34px; width: auto; }
+  }
+  @media (min-width: 961px) and (max-width: 1060px) {
+    .navitem > a { padding: 10px 7px; font-size: 13.5px; gap: 4px; }
+    .mainrow .cta .btn-tour { padding: 0 18px; font-size: 14px; }
+  }
