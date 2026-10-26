@@ -233,11 +233,21 @@
   .stage-card:focus-within { outline: 2px solid var(--rt-accent); outline-offset: 2px; }
   .stage-card p { margin: 0; color: var(--rt-slate); font-size: 15px; line-height: 1.6; flex: 1; }
   .stage-card .go { font-family: var(--rt-font-head); font-weight: 600; font-size: 14px; color: var(--rt-ink); }
+  .stage-dots { display: none; }
   @media (max-width: 960px) {
     .stages-inner { padding-block: 48px; }
-    .stage-cards { grid-template-columns: 1fr 1fr; }
+    /* Mobile and tablet: swipeable carousel, next card peeks in */
+    .stage-cards { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(16px, env(safe-area-inset-left, 0px)); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 4px max(16px, env(safe-area-inset-left, 0px)) 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .stage-cards::-webkit-scrollbar { display: none; }
+    .stage-card { flex: 0 0 min(78%, 320px); scroll-snap-align: start; }
+    .stage-card:hover, .stage-card:focus-within { transform: none; box-shadow: none; }
+    .stage-dots { display: flex; justify-content: center; gap: 4px; margin-top: 14px; }
+    .stage-dots button { width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+    .stage-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--rt-slate); opacity: .35; transition: width .2s ease, opacity .2s ease; }
+    .stage-dots button[aria-current="true"]::before { width: 22px; opacity: 1; background: var(--rt-ink); }
+    .stage-dots button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 0; border-radius: 6px; }
   }
-  @media (max-width: 560px) { .stage-cards { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .stage-dots button::before { transition: none; } .stage-cards { scroll-behavior: auto; } }
 
   /* ---------- Our campuses ---------- */
   .campuses-sec { background: var(--rt-paper); }
