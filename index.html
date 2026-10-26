@@ -508,13 +508,50 @@
 <section class="final-cta">
   <svg class="fcan-final" viewBox="0 0 139 96" aria-hidden="true"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
   <div class="final-inner">
-    <h2>Choose your campus</h2>
-    <p>Come and see a school day for yourself. Tours run at Sathorn and Sukhumvit, and Bang Na opens in August 2027.</p>
-    <ul class="final-choices">
-      <li><a href="/choose-campus-book-a-school-tour/"><span class="c-name">Sathorn</span><span class="c-act">Book a tour</span></a></li>
-      <li><a href="/choose-campus-book-a-school-tour/"><span class="c-name">Sukhumvit</span><span class="c-act">Book a tour</span></a></li>
-      <li><a href="/campus/raintree-international-school-bangna/"><span class="c-name">Bang Na <span class="badge">Opening August 2027</span></span><span class="c-act">Register interest</span></a></li>
-    </ul>
+    <div class="final-copy">
+      <h2>Choose your campus</h2>
+      <p>Come and see a school day for yourself. Tours run at Sathorn and Sukhumvit, and Bang Na opens in August 2027.</p>
+      <p class="final-contact">Prefer to call? Sathorn <a href="tel:+66632308000">+66 63-230-8000</a> · Sukhumvit <a href="tel:+66853335558">+66 85-333-5558</a> · Bang Na <a href="tel:+66822109000">+66 82-210-9000</a></p>
+    </div>
+    <div class="tour-card">
+      <form class="tour-form" id="tour-form" name="school-tour" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="school-tour">
+        <p class="visually-hidden"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <p class="tf-sentence">
+          Hi, my name is
+          <span class="tf-chunk"><label class="visually-hidden" for="tf-name">Your name</label><input class="tf-field tf-w-name" id="tf-name" name="name" type="text" placeholder="your name" autocomplete="name" required>.</span>
+          I would like to
+          <span class="tf-chunk"><label class="visually-hidden" for="tf-campus">Campus</label><select class="tf-field tf-select" id="tf-campus" name="campus" required>
+            <option value="" disabled selected>choose&hellip;</option>
+            <option value="Sathorn">book a tour of Sathorn</option>
+            <option value="Sukhumvit">book a tour of Sukhumvit</option>
+            <option value="Bang Na">register interest in Bang Na</option>
+          </select></span>
+          for my child, who is
+          <span class="tf-chunk"><label class="visually-hidden" for="tf-age">Child's age</label><select class="tf-field tf-select" id="tf-age" name="child_age" required>
+            <option value="" disabled selected>choose&hellip;</option>
+            <option>1 to 2 years old</option>
+            <option>2 to 3 years old</option>
+            <option>3 to 4 years old</option>
+            <option>4 to 5 years old</option>
+            <option>5 to 6 years old</option>
+          </select>.</span>
+          You can reach me at
+          <span class="tf-chunk"><label class="visually-hidden" for="tf-email">Email</label><input class="tf-field tf-w-email" id="tf-email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required></span>
+          or
+          <span class="tf-chunk"><label class="visually-hidden" for="tf-phone">Phone (optional)</label><input class="tf-field tf-w-phone" id="tf-phone" name="phone" type="tel" placeholder="phone (optional)" autocomplete="tel" inputmode="tel">.</span>
+        </p>
+        <div class="tf-actions">
+          <button class="btn-tour" type="submit" id="tf-submit">Book a School Tour</button>
+          <p class="tf-note">By sending this form you agree to our <a href="#">privacy policy</a>.</p>
+        </div>
+        <p class="tf-error" id="tf-error" role="alert" hidden>Please fill in the highlighted fields so we can pass your request to the right campus.</p>
+      </form>
+      <div class="tf-done" id="tf-done" hidden tabindex="-1">
+        <p class="tf-done-title">Thank you, we have your request.</p>
+        <p>The admissions team at your chosen campus will contact you to arrange a time.</p>
+      </div>
+    </div>
   </div>
 </section>
 

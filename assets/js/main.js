@@ -294,3 +294,38 @@
     });
     measure(); current = target; draw(current);
   })();
+
+  /* Tour request form: inline validation, Netlify Forms submission without leaving the page,
+     a per-campus key event for GA4 (tour booked, or Bang Na interest). */
+  (function () {
+    var form = document.getElementById('tour-form');
+    if (!form) return;
+    var campus = document.getElementById('tf-campus');
+    var btn = document.getElementById('tf-submit');
+    var err = document.getElementById('tf-error');
+    var done = document.getElementById('tf-done');
+    var label = function () { btn.textContent = campus.value === 'Bang Na' ? 'Register interest' : 'Book a School Tour'; };
+    campus.addEventListener('change', label);
+    form.addEventListener('input', function (e) { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) e.target.classList.remove('is-invalid'); });
+    form.addEventListener('change', function (e) { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) e.target.classList.remove('is-invalid'); });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var bad = [].filter.call(form.querySelectorAll('.tf-field'), function (f) { var ok = f.checkValidity(); f.classList.toggle('is-invalid', !ok); return !ok; });
+      if (bad.length) { err.hidden = false; bad[0].focus(); return; }
+      err.hidden = true;
+      btn.disabled = true;
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () {
+          window.dataLayer = window.dataLayer || [];
+          var bangna = campus.value === 'Bang Na';
+          window.dataLayer.push({ event: bangna ? 'bangna_interest' : 'tour_booked', campus: campus.value, form_location: 'homepage_final' });
+          form.hidden = true; done.hidden = false; done.focus();
+        })
+        .catch(function () {
+          btn.disabled = false;
+          err.textContent = 'Sorry, something went wrong sending your request. Please try again, or call the campus directly.';
+          err.hidden = false;
+        });
+    });
+  })();
