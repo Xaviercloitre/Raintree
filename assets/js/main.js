@@ -169,3 +169,23 @@
       }, (END - START) * 1000 + 1500);
     }
   })();
+
+  /* Chalk underlines: draw each one in once, the first time it comes into view */
+  (function () {
+    var sel = '.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a';
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = document.querySelectorAll(sel);
+    if (!els.length) return;
+    document.documentElement.classList.add('chalk-js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        el.classList.add('drawing');
+        requestAnimationFrame(function () { el.classList.add('drawn'); });
+        setTimeout(function () { el.classList.remove('drawing'); }, 1200);
+      });
+    }, { threshold: 1, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
