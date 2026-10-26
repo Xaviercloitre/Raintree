@@ -61,8 +61,7 @@
     }
 
     /* Desktop baby steps: the child walks from step 1 to step 3 as the parent scrolls.
-       Each print appears when the scroll reaches it and fades once the walk has moved on,
-       so the trail follows the scroll in both directions. */
+       Each print appears when the scroll reaches it and stays; scrolling back above it hides it again. */
     var trail = document.querySelector('.steps-trail');
     if (trail) {
       var tprints = trail.querySelectorAll('svg');
@@ -78,7 +77,7 @@
           var progress = (vh * 0.9 - r.top) / (vh * 0.6) * 100;
           tprints.forEach(function (p) {
             var at = parseFloat(p.style.left);
-            p.classList.toggle('seen', progress >= at && progress <= at + 40);
+            p.classList.toggle('seen', progress >= at);
           });
         };
         var tScroll = function () { if (!tTick) { tTick = true; requestAnimationFrame(tWalk); } };
@@ -89,8 +88,8 @@
     }
 
     /* Baby steps: the child walks down the section as the parent scrolls (mobile).
-       Each print appears when the scroll reaches it and fades again once the
-       walk has moved on, so the trail follows the scroll both ways. */
+       Each print appears when the scroll reaches it and stays;
+       scrolling back above it hides it again. */
     var stepsBg = document.querySelector('.baby-steps');
     var prints = document.querySelectorAll('.baby-steps svg');
     if (stepsBg && prints.length) {
@@ -105,7 +104,7 @@
           var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
           prints.forEach(function (p) {
             var t = parseFloat(p.getAttribute('data-t'));
-            p.classList.toggle('seen', progress >= t + 8 && progress <= t + 58);
+            p.classList.toggle('seen', progress >= t + 8);
           });
         };
         var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
