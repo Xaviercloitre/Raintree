@@ -624,6 +624,28 @@
   .tj-tree-done .tj-crown { animation: tj-crown .8s .25s cubic-bezier(.34,1.4,.64,1) both; }
   @keyframes tj-trunk { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   @keyframes tj-crown { from { transform: scale(0); } to { transform: scale(1); } }
+  /* Thank-you: two leaves drift down from the canopy once the tree has grown, then settle */
+  .tj-leaf > g { transform-box: fill-box; transform-origin: center; opacity: 0; }
+  .tj-leaf path { fill: var(--rt-canopy); stroke: #8CC3D6; stroke-width: .9; stroke-linecap: round; }
+  .tj-leaf-1 > g { animation: tj-fall-1 3.4s 1.1s cubic-bezier(.45,.05,.4,1) forwards; }
+  .tj-leaf-2 > g { animation: tj-fall-2 3.9s 1.6s cubic-bezier(.45,.05,.4,1) forwards; }
+  @keyframes tj-fall-1 {
+    0% { opacity: 0; transform: translate(0, 0) rotate(-20deg); }
+    8% { opacity: 1; }
+    30% { transform: translate(-9px, 15px) rotate(25deg); }
+    55% { transform: translate(3px, 31px) rotate(-30deg); }
+    80% { transform: translate(-8px, 46px) rotate(20deg); }
+    100% { opacity: 1; transform: translate(-5px, 55px) rotate(78deg); }
+  }
+  @keyframes tj-fall-2 {
+    0% { opacity: 0; transform: translate(0, 0) rotate(15deg); }
+    8% { opacity: 1; }
+    30% { transform: translate(9px, 16px) rotate(-25deg); }
+    55% { transform: translate(-2px, 34px) rotate(28deg); }
+    80% { transform: translate(10px, 49px) rotate(-18deg); }
+    100% { opacity: 1; transform: translate(8px, 60px) rotate(-70deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .tj-leaf > g { animation: none; opacity: 0; } }
   .tj-done .tj-done-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 24px; line-height: 1.3; color: var(--rt-ink); margin: 0 0 8px; text-wrap: balance; }
   .tj-done p { margin: 0; font-size: 16px; color: var(--rt-ink); }
 
