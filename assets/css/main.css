@@ -277,8 +277,8 @@
     .stage-dots { display: flex; justify-content: center; gap: 4px; margin-top: 14px; }
     .stage-dots button { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; min-width: 0; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: inherit; font: inherit; line-height: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
     .stage-dots button::before { flex: none; display: block; }
-    .stage-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--rt-slate); opacity: .35; transition: width .2s ease, opacity .2s ease; }
-    .stage-dots button[aria-current="true"]::before { width: 22px; opacity: 1; background: var(--rt-ink); }
+    .stage-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
+    .stage-dots button[aria-current="true"]::before { width: 22px; background: var(--rt-slate); }
     .stage-dots button:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 0; border-radius: 6px; }
   }
   @media (prefers-reduced-motion: reduce) { .stage-dots button::before { transition: none; } .stage-cards { scroll-behavior: auto; } }
