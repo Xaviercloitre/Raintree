@@ -186,7 +186,7 @@
 
   /* Chalk underlines: draw each one in once, the first time it comes into view */
   (function () {
-    var sel = '.approach-cta a, .day-link a, .vc-more, .adm-link, .ht-name, .ht-creds a, .fc-card .fc-link, .faq .answer a';
+    var sel = '.approach-cta a, .day-link a, .vc-more, .adm-link, .ht-team, .fc-card .fc-link, .faq .answer a';
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var els = document.querySelectorAll(sel);
     if (!els.length) return;
