@@ -663,9 +663,9 @@
   }
 
 
-  /* Mobile: a quieter hero heading, so the photo and the tour button lead */
+  /* Mobile: headline matches the section H2 size; tighter spacing and a smaller lede keep the hero calm */
   @media (max-width: 640px) {
-    .hero .hero-content h1 { font-size: 21px; line-height: 1.35; gap: 8px; margin-bottom: 10px; font-weight: 600; }
+    .hero .hero-content h1 { font-size: 26px; line-height: 1.3; gap: 8px; margin-bottom: 10px; font-weight: 600; }
     .hero .hero-content h1 .kicker { font-size: 11px; }
     .hero .hero-lede { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
   }
