@@ -381,9 +381,9 @@
   .baby-steps { display: none; }
   @media (max-width: 960px) {
     .baby-steps { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-    .baby-steps svg { position: absolute; width: 76px; height: auto; max-width: none; opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .7s ease, transform .7s ease; }
+    .baby-steps svg { position: absolute; width: 54px; height: auto; max-width: none; opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .7s ease, transform .7s ease; }
     .baby-steps svg.seen { opacity: .5; transform: none; }
-    .baby-steps svg path, .baby-steps svg circle { fill: var(--rt-canopy); }
+    .baby-steps svg path, .baby-steps svg ellipse { fill: var(--rt-canopy); }
   }
   @media (prefers-reduced-motion: reduce) { .baby-steps svg { transition: none; opacity: .5; transform: none; } }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 0 0 36px; padding: 0; list-style: none; counter-reset: step; }
