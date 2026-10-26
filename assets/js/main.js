@@ -60,16 +60,31 @@
       paint();
     }
 
-    /* Desktop baby steps: the trail walks once from step 1 to step 3 when the steps come into view */
+    /* Desktop baby steps: the child walks from step 1 to step 3 as the parent scrolls.
+       Each print appears when the scroll reaches it and fades once the walk has moved on,
+       so the trail follows the scroll in both directions. */
     var trail = document.querySelector('.steps-trail');
     if (trail) {
-      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        trail.classList.add('walk');
+      var tprints = trail.querySelectorAll('svg');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        tprints.forEach(function (p) { p.classList.add('seen'); });
       } else {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { if (en.isIntersecting) { trail.classList.add('walk'); io.disconnect(); } });
-        }, { threshold: 0.6 });
-        io.observe(trail.parentElement);
+        var tTick = false;
+        var tWalk = function () {
+          tTick = false;
+          var r = trail.parentElement.getBoundingClientRect();
+          var vh = window.innerHeight || 1;
+          /* 0 when the steps enter at 90% of the viewport, 100 when they reach 30% */
+          var progress = (vh * 0.9 - r.top) / (vh * 0.6) * 100;
+          tprints.forEach(function (p) {
+            var at = parseFloat(p.style.left);
+            p.classList.toggle('seen', progress >= at && progress <= at + 40);
+          });
+        };
+        var tScroll = function () { if (!tTick) { tTick = true; requestAnimationFrame(tWalk); } };
+        window.addEventListener('scroll', tScroll, { passive: true });
+        window.addEventListener('resize', tScroll);
+        tWalk();
       }
     }
 

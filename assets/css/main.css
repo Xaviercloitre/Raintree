@@ -417,9 +417,9 @@
   @media (min-width: 961px) {
     .steps-wrap { padding-top: 34px; }
     .steps-trail { display: block; position: absolute; left: 0; right: 0; top: -26px; height: 52px; pointer-events: none; }
-    .steps-trail svg { position: absolute; width: 34px; height: 34px; opacity: 0; transform: translateX(-6px); transition: opacity .5s ease, transform .5s ease; transition-delay: calc(var(--i) * 170ms); }
+    .steps-trail svg { position: absolute; width: 34px; height: 34px; opacity: 0; transform: translateX(-6px); transition: opacity .45s ease, transform .45s ease; }
     .steps-trail svg path, .steps-trail svg ellipse { fill: var(--rt-canopy); }
-    .steps-trail.walk svg { opacity: .42; transform: none; }
+    .steps-trail svg.seen { opacity: .42; transform: none; }
   }
   @media (prefers-reduced-motion: reduce) { .steps-trail svg { transition: none; opacity: .42; transform: none; } }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 0 0 44px; padding: 0; list-style: none; counter-reset: step; }
