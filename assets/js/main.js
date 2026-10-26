@@ -237,7 +237,9 @@
   })();
 
   /* Approach pillars: card deck. Each card is slightly turned behind the one in front;
-     as the parent scrolls, the front card lifts away and the next straightens up. */
+     as the parent scrolls, the front card lifts away and the next straightens up.
+     The deck eases towards the scroll position (rather than jumping with it), uses
+     GPU transforms only, and ignores the mobile address bar showing and hiding. */
   (function () {
     var sec = document.querySelector('.approach');
     if (!sec || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -245,31 +247,50 @@
     if (cards.length < 2) return;
     sec.classList.add('deck');
     var stage = sec.querySelector('.pillars-stage');
-    var REST = [-5, 4, -3];
+    var inner = sec.querySelector('.approach-inner');
+    var mq = window.matchMedia('(max-width: 960px)');
+    var REST = [-4, 3, -2];
+    var N = cards.length - 1;
     var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
-    var ease = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
-    var tick = false;
-    var paint = function () {
-      tick = false;
-      var mobile = window.matchMedia('(max-width: 960px)').matches;
-      var box = (mobile ? stage : sec.querySelector('.approach-inner')).getBoundingClientRect();
-      var vh = window.innerHeight || 1;
+    var ease = function (x) { return x * x * (3 - 2 * x); };   /* smoothstep */
+    var vh = document.documentElement.clientHeight;
+    var lastW = window.innerWidth;
+    var target = 0, current = 0, running = false, visible = false;
+
+    var measure = function () {
+      var box = (mq.matches ? stage : inner).getBoundingClientRect();
       var span = Math.max(1, box.height - vh);
-      var p = clamp(-box.top / span) * (cards.length - 1);   /* 0 .. number of hand-offs */
-      cards.forEach(function (c, i) {
-        var rest = REST[i % REST.length];
-        var come = ease(clamp(p - (i - 1)));   /* straightening as it becomes the front card */
-        var leave = ease(clamp(p - i));        /* lifting away once it is done */
-        if (i === cards.length - 1) leave = 0;
-        var rot = rest * (1 - come) + leave * -12;
-        var y = leave * -115;
-        var x = leave * -18;
-        c.style.transform = 'translate(' + x + '%,' + y + '%) rotate(' + rot + 'deg)';
-        c.style.opacity = String(1 - clamp((leave - .75) / .25));
-      });
+      target = clamp(-box.top / span) * N;
     };
-    var onScroll = function () { if (!tick) { tick = true; requestAnimationFrame(paint); } };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    paint();
+    var draw = function (p) {
+      for (var i = 0; i < cards.length; i++) {
+        var rest = REST[i % REST.length];
+        var come = ease(clamp(p - (i - 1)));
+        var leave = i === N ? 0 : ease(clamp(p - i));
+        var rot = rest * (1 - come) - 10 * leave;
+        var y = -112 * leave, x = -14 * leave;
+        cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg)';
+        cards[i].style.opacity = (1 - clamp((leave - .55) / .45)).toFixed(3);
+      }
+    };
+    var loop = function () {
+      current += (target - current) * 0.16;
+      if (Math.abs(target - current) < 0.0005) current = target;
+      draw(current);
+      if (current !== target && visible) requestAnimationFrame(loop); else running = false;
+    };
+    var kick = function () {
+      measure();
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) kick(); }, { rootMargin: '200px 0px' }).observe(sec);
+    } else { visible = true; }
+    window.addEventListener('scroll', function () { if (visible) kick(); }, { passive: true });
+    window.addEventListener('resize', function () {
+      /* only a real width change re-measures; the address bar collapsing must not jolt the deck */
+      if (window.innerWidth !== lastW) { lastW = window.innerWidth; vh = document.documentElement.clientHeight; }
+      kick();
+    });
+    measure(); current = target; draw(current);
   })();
