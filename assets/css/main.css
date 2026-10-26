@@ -257,26 +257,35 @@
 
   /* ---------- A day at Raintree ---------- */
   .day { background: var(--rt-canopy-tint); }
-  .day-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 72px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; }
+  .day-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 88px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
   .day h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 14px; }
-  .day p { font-size: 17px; color: var(--rt-ink); margin: 0 0 22px; max-width: 55ch; }
-  .rhythm { display: flex; flex-direction: column; gap: 0; margin: 0 0 6px; padding: 0; list-style: none; }
-  .rhythm li { display: flex; align-items: baseline; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--rt-border); font-size: 15px; color: var(--rt-slate); }
-  .rhythm li:last-child { border-bottom: 0; }
-  .rhythm .t { font-family: var(--rt-font-head); font-weight: 600; font-size: 14px; color: var(--rt-ink); min-width: 92px; font-variant-numeric: tabular-nums; }
-  .player { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: var(--rt-radius-card); overflow: hidden; background: linear-gradient(150deg, #D8EDF5 0%, #BBE0EC 70%, #A9D6E5 100%); border: 1px solid var(--rt-border); }
-  .player .ph-art { position: absolute; width: 50%; right: -8%; top: 8%; opacity: .5; }
-  .player .ph-art path { fill: #fff; }
-  .player .shot { position: absolute; left: 16px; bottom: 14px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-family: var(--rt-font-head); font-weight: 600; color: var(--rt-slate); background: rgba(255,255,255,.8); border-radius: 999px; padding: 4px 10px; }
-  .play-btn { position: absolute; inset: 0; margin: auto; width: 86px; height: 86px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(251,250,247,.92); box-shadow: 0 14px 36px rgba(46,53,64,.22); display: flex; align-items: center; justify-content: center; transition: transform .14s ease; }
-  .play-btn:hover { transform: scale(1.05); }
-  .play-btn:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 3px; }
-  @media (prefers-reduced-motion: reduce) { .play-btn { transition: none; } .play-btn:hover { transform: none; } }
-  .play-btn svg { width: 30px; height: 30px; margin-left: 4px; }
-  .play-btn svg path { fill: var(--rt-ink); }
-  .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .day .day-lead { font-size: 17px; line-height: 1.6; color: var(--rt-ink); margin: 0 0 32px; max-width: 46ch; }
+  .rhythm { position: relative; margin: 0 0 32px; padding: 0 0 0 28px; list-style: none; display: flex; flex-direction: column; gap: 22px; }
+  .rhythm::before { content: ""; position: absolute; left: 6px; top: 10px; bottom: 10px; width: 2px; background: var(--rt-canopy); border-radius: 2px; }
+  .rhythm li { position: relative; display: flex; flex-direction: column; gap: 2px; }
+  .rhythm li::before { content: ""; position: absolute; left: -28px; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--rt-paper); border: 3px solid var(--rt-canopy); box-sizing: border-box; }
+  .rhythm .t { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; color: var(--rt-ink); font-variant-numeric: tabular-nums; }
+  .rhythm .d { font-size: 15px; color: var(--rt-ink); opacity: .85; }
+  .day-link { margin: 0; }
+  .day-link a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
+  .day-link a:hover { border-color: var(--rt-ink); }
+  .player { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: var(--rt-radius-card); overflow: hidden; background: linear-gradient(150deg, #D8EDF5 0%, #BBE0EC 70%, #A9D6E5 100%); box-shadow: 0 24px 48px rgba(46,53,64,.14); }
+  /* The current poster file has white bands baked into its left and right edges; this crops them until a clean export replaces it */
+  .player img { transform: scale(1.145) translateX(1.76%); }
+  .player::after { content: ""; position: absolute; inset: 55% 0 0 0; background: linear-gradient(to top, rgba(46,53,64,.45), rgba(46,53,64,0)); pointer-events: none; }
+  .play-btn { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: flex-end; justify-content: flex-start; }
+  .play-pill { margin: 0 0 22px 22px; display: inline-flex; align-items: center; gap: 12px; padding: 6px 20px 6px 6px; border-radius: 999px; background: rgba(251,250,247,.95); box-shadow: 0 10px 28px rgba(46,53,64,.22); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; color: var(--rt-ink); transition: transform .14s ease; }
+  .play-ic { width: 44px; height: 44px; border-radius: 50%; background: var(--rt-ink); display: inline-flex; align-items: center; justify-content: center; }
+  .play-ic svg { width: 18px; height: 18px; margin-left: 3px; }
+  .play-ic svg path { fill: #fff; }
+  .play-btn:hover .play-pill { transform: translateY(-2px); }
+  .play-btn:focus-visible { outline: none; }
+  .play-btn:focus-visible .play-pill { outline: 2px solid var(--rt-accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .play-pill { transition: none; } .play-btn:hover .play-pill { transform: none; } }
+  .player iframe { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; border: 0; }
   @media (max-width: 960px) {
     .day-inner { grid-template-columns: 1fr; gap: 28px; padding-block: 48px; }
+    .play-pill { margin: 0 0 14px 14px; font-size: 14px; }
   }
 
   /* ---------- Our teachers ---------- */

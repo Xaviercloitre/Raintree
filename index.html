@@ -312,19 +312,20 @@
 
 <section class="day">
   <div class="day-inner">
-    <div>
+    <div class="day-copy">
+      <p class="eyebrow">Campus film</p>
       <h2>A day at Raintree</h2>
-      <p>The campus film shows the day as children live it: the ateliers, the garden and the people who fill them.</p>
-      <ul class="rhythm">
-        <li><span class="t">8:00 to 8:30</span> Arrival, a calm start to the morning</li>
-        <li><span class="t">By 3:00</span> Pick-up, with the day's stories to tell</li>
-      </ul>
+      <p class="day-lead">The campus film shows the day as children live it: the ateliers, the garden and the people who fill them.</p>
+      <ol class="rhythm" aria-label="The shape of the day">
+        <li><span class="t">8:00 to 8:30</span><span class="d">Arrival, a calm start to the morning</span></li>
+        <li><span class="t">By 3:00</span><span class="d">Pick-up, with the day's stories to tell</span></li>
+      </ol>
+      <p class="day-link"><a href="/choose-campus-book-a-school-tour/">See it in person on a school tour <span class="arrow" aria-hidden="true">&rarr;</span></a></p>
     </div>
     <div class="player" id="day-player">
-      <svg class="ph-art" viewBox="0 0 139 96" aria-hidden="true"><path d="M14 52 C 6 36, 18 18, 40 14 C 58 4, 92 2, 112 14 C 130 22, 140 38, 132 52 C 124 66, 104 72, 82 70 C 60 76, 28 70, 14 52 Z"/></svg>
-      <span class="shot">Poster: campus film still</span><img src='https://raintree.ac.th/wp-content/uploads/2026/05/what-happen-first-day-school-raintree.webp' alt="Children arriving for the school day at Raintree" loading='lazy' onerror='this.remove()'>
+      <img src="https://raintree.ac.th/wp-content/uploads/2026/05/what-happen-first-day-school-raintree.webp" alt="A parent walking a young child into school for the morning arrival at Raintree" width="2240" height="1260" loading="lazy" decoding="async" onerror="this.remove()">
       <button type="button" class="play-btn" id="day-play" aria-label="Watch the campus film">
-        <svg viewBox="0 0 30 30" aria-hidden="true"><path d="M8 4.5 L26 15 L8 25.5 Z"/></svg>
+        <span class="play-pill"><span class="play-ic"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M9 5.5 L25 15 L9 24.5 Z"/></svg></span><span class="play-txt">Watch the film</span></span>
       </button>
     </div>
   </div>
