@@ -199,6 +199,31 @@
   .pillar svg path, .pillar svg circle { stroke: var(--rt-ink); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .pillar h3 { font-family: var(--rt-font-head); font-weight: 600; font-size: 18px; color: var(--rt-ink); margin: 0; }
   .pillar p { margin: 0; color: var(--rt-slate); font-size: 15px; line-height: 1.6; }
+  .approach-head .approach-cta { margin: 28px 0 0; }
+  /* ---------- Approach: card deck on scroll ----------
+     JS adds .deck to the section when motion is allowed. The section grows tall, the heading
+     and the deck stay pinned, and each card lifts away to reveal the next as the parent scrolls. */
+  .approach.deck .approach-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; height: calc(100vh + 150vh); padding-block: 0; }
+  .approach.deck .approach-head { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; margin: 0; padding-top: 80px; }
+  .approach.deck .pillars-stage { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 80px; }
+  .approach.deck .pillars { position: relative; display: block; width: min(100%, 440px); aspect-ratio: 1; margin: 0; }
+  .approach.deck .pillar { position: absolute; inset: 0; padding: 40px 40px 44px; justify-content: flex-end; gap: 12px; box-shadow: 0 18px 40px rgba(46,53,64,.10); will-change: transform; transform-origin: 50% 80%; }
+  .approach.deck .pillar:nth-child(1) { background: var(--rt-canopy); z-index: 3; }
+  .approach.deck .pillar:nth-child(2) { background: var(--rt-canopy-tint); z-index: 2; }
+  .approach.deck .pillar:nth-child(3) { background: #fff; border: 1px solid var(--rt-border); z-index: 1; }
+  .approach.deck .pillar svg { position: absolute; top: 36px; left: 40px; width: 44px; height: 44px; margin: 0; }
+  .approach.deck .pillar h3 { font-size: 32px; line-height: 1.15; }
+  .approach.deck .pillar p { color: var(--rt-ink); font-size: 16px; }
+  @media (max-width: 960px) {
+    .approach.deck .approach-inner { grid-template-columns: 1fr; gap: 0; height: auto; padding-top: 48px; }
+    .approach.deck .approach-head { position: static; height: auto; padding-top: 0; margin-bottom: 8px; }
+    .approach.deck .pillars-stage { height: calc(100vh + 130vh); align-items: flex-start; padding-top: 0; position: relative; }
+    .approach.deck .pillars { position: sticky; top: max(96px, calc(50vh - 190px)); width: min(100%, 360px); margin: 24px auto 0; }
+    .approach.deck .pillar { padding: 28px 26px 30px; }
+    .approach.deck .pillar svg { top: 26px; left: 26px; width: 38px; height: 38px; }
+    .approach.deck .pillar h3 { font-size: 26px; }
+    .approach.deck .pillar p { font-size: 15px; }
+  }
   .approach-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; padding-bottom: 14px;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 16' preserveAspectRatio='none'%3E%3Cfilter id='c' x='-15%25' y='-60%25' width='130%25' height='240%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09 0.75' numOctaves='3' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='4.8'/%3E%3C/filter%3E%3Cg filter='url(%23c)'%3E%3Cpath d='M4 7 C 28 3.5, 52 11, 82 6.5 C 104 3.2, 128 10.5, 156 5.5' fill='none' stroke='%239CCFE3' stroke-width='4' stroke-linecap='round' stroke-dasharray='26 1.6 14 1.2 32 1.8 20 1.4 40'/%3E%3Cpath d='M7 11.5 C 34 8.5, 60 13.5, 92 9.5 C 116 6.8, 138 12.5, 153 9' fill='none' stroke='%239CCFE3' stroke-width='2.6' stroke-opacity='.55' stroke-linecap='round' stroke-dasharray='18 2 30 1.5 24 2 36'/%3E%3C/g%3E%3C/svg%3E") no-repeat left bottom / 100% 16px; }
   .approach-cta a:hover { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 16' preserveAspectRatio='none'%3E%3Cfilter id='c' x='-15%25' y='-60%25' width='130%25' height='240%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09 0.75' numOctaves='3' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='4.8'/%3E%3C/filter%3E%3Cg filter='url(%23c)'%3E%3Cpath d='M4 7 C 28 3.5, 52 11, 82 6.5 C 104 3.2, 128 10.5, 156 5.5' fill='none' stroke='%236D737C' stroke-width='4' stroke-linecap='round' stroke-dasharray='26 1.6 14 1.2 32 1.8 20 1.4 40'/%3E%3Cpath d='M7 11.5 C 34 8.5, 60 13.5, 92 9.5 C 116 6.8, 138 12.5, 153 9' fill='none' stroke='%236D737C' stroke-width='2.6' stroke-opacity='.55' stroke-linecap='round' stroke-dasharray='18 2 30 1.5 24 2 36'/%3E%3C/g%3E%3C/svg%3E"); }

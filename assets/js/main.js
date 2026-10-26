@@ -235,3 +235,41 @@
     window.addEventListener('resize', mark);
     mark();
   })();
+
+  /* Approach pillars: card deck. Each card is slightly turned behind the one in front;
+     as the parent scrolls, the front card lifts away and the next straightens up. */
+  (function () {
+    var sec = document.querySelector('.approach');
+    if (!sec || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var cards = sec.querySelectorAll('.pillar');
+    if (cards.length < 2) return;
+    sec.classList.add('deck');
+    var stage = sec.querySelector('.pillars-stage');
+    var REST = [-5, 4, -3];
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+    var ease = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+    var tick = false;
+    var paint = function () {
+      tick = false;
+      var mobile = window.matchMedia('(max-width: 960px)').matches;
+      var box = (mobile ? stage : sec.querySelector('.approach-inner')).getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+      var span = Math.max(1, box.height - vh);
+      var p = clamp(-box.top / span) * (cards.length - 1);   /* 0 .. number of hand-offs */
+      cards.forEach(function (c, i) {
+        var rest = REST[i % REST.length];
+        var come = ease(clamp(p - (i - 1)));   /* straightening as it becomes the front card */
+        var leave = ease(clamp(p - i));        /* lifting away once it is done */
+        if (i === cards.length - 1) leave = 0;
+        var rot = rest * (1 - come) + leave * -12;
+        var y = leave * -115;
+        var x = leave * -18;
+        c.style.transform = 'translate(' + x + '%,' + y + '%) rotate(' + rot + 'deg)';
+        c.style.opacity = String(1 - clamp((leave - .75) / .25));
+      });
+    };
+    var onScroll = function () { if (!tick) { tick = true; requestAnimationFrame(paint); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    paint();
+  })();
