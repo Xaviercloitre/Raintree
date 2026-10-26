@@ -487,8 +487,6 @@
   .footer-links, .footer-social { display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 0; padding: 0; list-style: none; }
   .footer-links a { color: var(--rt-slate); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
   .footer-links a:hover { color: var(--rt-ink); }
-  .footer-links .pp-langs { color: var(--rt-slate); display: inline-flex; align-items: center; min-height: 44px; }
-  .footer-links .pp-langs a { min-height: 44px; padding: 0 2px; }
   .footer-social { gap: 10px; }
   .footer-social a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rt-slate); color: var(--rt-slate); background: transparent; }
   .footer-social a:hover, .footer-social a:focus-visible { color: var(--rt-ink); border-color: var(--rt-ink); background: #fff; }
