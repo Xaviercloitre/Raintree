@@ -263,7 +263,9 @@
   .cc-details li:has(.cc-tel) { align-items: start; }
   .cc-tel { grid-column: 2; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
   .cc-lbl { font-size: 12px; color: var(--rt-slate); letter-spacing: .02em; }
-  .campus-card .card-cta { margin-top: auto; }
+  .campus-card .card-cta { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
+  .ph-link { position: absolute; inset: 0; display: block; }
+  .cc-more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 14px; }
   @media (prefers-reduced-motion: reduce) { .campus-card, .campus-card .ph img, .campus-card h3 .arrow { transition: none; } .campus-card:hover, .campus-card:focus-within { transform: none; } .campus-card:hover .ph img { transform: none; } }
   .campus-card .phone { color: var(--rt-ink); text-decoration: none; font-size: 15px; font-variant-numeric: tabular-nums; display: inline-block; }
   .campus-card .phone:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -559,7 +561,7 @@
   /* ---------- Chalk underline, taken from the logo wordmark ----------
      One treatment for every underlined text link and the Head Teacher's name.
      With JS and motion allowed, each line is drawn left to right the first time it scrolls into view. */
-  .approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a {
+  .approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a, .cc-more {
     --cw: 100%; --ch: 7px;
     text-decoration: none;
     background: url("/assets/img/chalk-underline.png") left bottom / var(--cw) var(--ch) no-repeat;
@@ -567,15 +569,17 @@
     transition: background-size .25s ease;
   }
   .approach-cta a, .day-link a, .voices-cta a, .adm-link { padding-bottom: 10px; }
+  .cc-more { padding-bottom: 8px; --ch: 6px; }
+  .cc-more:hover { --ch: 9px; }
   .ht-name { padding-bottom: 9px; }
   .fc-card h2 a { padding-bottom: 8px; }
   .ht-creds a, .faq .answer a, .fc-card .fc-link { padding-bottom: 5px; --ch: 5px; }
   .approach-cta a:hover, .day-link a:hover, .voices-cta a:hover, .adm-link:hover, .fc-card h2 a:hover { --ch: 10px; }
   .ht-creds a:hover, .faq .answer a:hover, .fc-card .fc-link:hover { --ch: 7px; }
-  .chalk-js :is(.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a):not(.drawn) { --cw: 0%; }
-  .chalk-js :is(.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a).drawing { transition: background-size 1.1s cubic-bezier(.65, 0, .35, 1); }
+  .chalk-js :is(.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a, .cc-more):not(.drawn) { --cw: 0%; }
+  .chalk-js :is(.approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a, .cc-more).drawing { transition: background-size 1.1s cubic-bezier(.65, 0, .35, 1); }
   @media (prefers-reduced-motion: reduce) {
-    .approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a { transition: none; }
+    .approach-cta a, .day-link a, .voices-cta a, .adm-link, .ht-name, .ht-creds a, .fc-card h2 a, .fc-card .fc-link, .faq .answer a, .cc-more { transition: none; }
   }
 
   .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
