@@ -281,26 +281,26 @@
 
   /* ---------- Our teachers ---------- */
   .teachers { background: var(--rt-paper); }
-  .teachers-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 72px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; align-items: center; }
-  .teachers .portrait { position: relative; aspect-ratio: 3 / 4; max-width: 100%; border-radius: var(--rt-radius-card); overflow: hidden; background: linear-gradient(165deg, #EAF5F9 0%, #D8EDF5 55%, #BBE0EC 100%); border: 1px solid var(--rt-border); }
-  .teachers .portrait svg { position: absolute; width: 80%; left: 10%; top: 18%; opacity: .5; }
-  .teachers .portrait svg path { fill: #fff; }
-  .teachers .portrait img.ht-photo { inset: auto; left: 50%; top: 50%; width: 160px; height: 160px; transform: translate(-50%, -50%); border-radius: 50%; border: 4px solid #fff; box-shadow: 0 10px 30px rgba(46,53,64,.12); }
-  .teachers .portrait .shot { position: absolute; left: 14px; bottom: 12px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-family: var(--rt-font-head); font-weight: 600; color: var(--rt-slate); background: rgba(255,255,255,.8); border-radius: 999px; padding: 4px 10px; }
+  .teachers-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 88px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
   .teachers h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 14px; }
-  .teachers .lead-line { font-size: 17px; color: var(--rt-ink); margin: 0 0 20px; max-width: 58ch; }
-  .ht-card { background: var(--rt-canopy-tint); border-radius: var(--rt-radius-card); padding: 24px 28px; margin-bottom: 22px; }
-  .ht-card .ht-name { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; color: var(--rt-ink); margin: 0 0 2px; }
-  .ht-card .ht-creds { font-size: 14px; color: var(--rt-slate); margin: 0 0 12px; }
-  .ht-card .quote-slot { font-size: 15px; line-height: 1.6; color: var(--rt-ink); margin: 0; font-style: italic; }
-  .ht-card .quote-slot p { margin: 0 0 10px; }
+  .teachers .lead-line { font-size: 17px; color: var(--rt-ink); margin: 0 0 20px; max-width: 42ch; }
+  .ht-card { position: relative; margin: 0; background: var(--rt-canopy-tint); border-radius: var(--rt-radius-card); padding: 48px 44px 36px; overflow: hidden; }
+  .ht-card::before { content: "\201C"; position: absolute; top: -18px; left: 28px; font-family: Georgia, "Times New Roman", serif; font-size: 140px; line-height: 1; color: var(--rt-canopy); pointer-events: none; }
+  .ht-card .quote-slot { position: relative; font-size: 16px; line-height: 1.7; color: var(--rt-ink); margin: 0 0 28px; font-style: italic; }
+  .ht-card .quote-slot p { margin: 0 0 12px; }
+  .ht-card .quote-slot p:first-child { font-family: var(--rt-font-head); font-style: normal; font-weight: 600; font-size: 20px; }
   .ht-card .quote-slot p:last-child { margin-bottom: 0; }
-  .ht-card .quote-slot .tbc { font-style: normal; }
+  .ht-head { display: flex; align-items: center; gap: 16px; padding-top: 24px; border-top: 1px solid rgba(109,115,124,.2); }
+  .ht-head .ht-photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; border: 3px solid #fff; box-shadow: 0 6px 18px rgba(46,53,64,.12); display: block; }
+  .ht-head .ht-name { display: block; font-family: var(--rt-font-head); font-weight: 600; font-size: 16px; color: var(--rt-ink); }
+  .ht-head .ht-creds { display: block; font-size: 14px; color: var(--rt-ink); opacity: .8; margin-top: 2px; }
+  .teachers-cta { margin: 0; }
   .teachers-cta a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--rt-ink); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--rt-canopy); padding-bottom: 2px; }
   .teachers-cta a:hover { border-color: var(--rt-ink); }
   @media (max-width: 960px) {
-    .teachers-inner { grid-template-columns: 1fr; gap: 28px; padding-block: 48px; }
-    .teachers .portrait { max-width: none; aspect-ratio: auto; height: 220px; }
+    .teachers-inner { grid-template-columns: 1fr; gap: 28px; padding-block: 56px; }
+    .ht-card { padding: 40px 24px 28px; }
+    .ht-card::before { font-size: 110px; left: 16px; }
   }
 
   /* ---------- Parent voices ---------- */
