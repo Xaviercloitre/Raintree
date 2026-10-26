@@ -457,7 +457,7 @@
     .baby-steps { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
     .baby-steps svg { position: absolute; width: 32px; height: auto; max-width: none; opacity: 0; transition: opacity .35s ease, transform .35s ease, filter .35s ease; will-change: opacity, transform; }
     .baby-steps svg.seen { opacity: .55; transform: none; }
-    .baby-steps svg path, .baby-steps svg ellipse { fill: var(--rt-canopy); }
+    .baby-steps svg { color: #8FC6DA; }
   }
   @media (prefers-reduced-motion: reduce) { .baby-steps svg { transition: none; opacity: .5 !important; transform: none !important; filter: none !important; } }
   .steps-wrap { position: relative; }
@@ -466,7 +466,7 @@
     .steps-wrap { padding-top: 34px; }
     .steps-trail { display: block; position: absolute; left: 0; right: 0; top: -26px; height: 52px; pointer-events: none; }
     .steps-trail svg { position: absolute; width: 34px; height: 34px; opacity: 0; transition: opacity .35s ease, transform .35s ease, filter .35s ease; will-change: opacity, transform; }
-    .steps-trail svg path, .steps-trail svg ellipse { fill: var(--rt-canopy); }
+    .steps-trail svg { color: #8FC6DA; }
     .steps-trail svg.seen { opacity: .42; transform: none; }
   }
   @media (prefers-reduced-motion: reduce) { .steps-trail svg { transition: none; opacity: .42 !important; transform: none !important; filter: none !important; } }

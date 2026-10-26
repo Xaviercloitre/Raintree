@@ -89,7 +89,7 @@
           var progress = (vh * 0.9 - r.top) / (vh * 0.6) * 100;
           tprints.forEach(function (p) {
             var at = parseFloat(p.style.left);
-            washPrint(p, progress - at, .42);
+            washPrint(p, progress - at, .7);
           });
         };
         var tScroll = function () { if (!tTick) { tTick = true; requestAnimationFrame(tWalk); } };
@@ -116,7 +116,7 @@
           var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
           prints.forEach(function (p) {
             var t = parseFloat(p.getAttribute('data-t'));
-            washPrint(p, progress - (t + 8), .55);
+            washPrint(p, progress - (t + 8), .8);
           });
         };
         var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
