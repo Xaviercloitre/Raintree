@@ -390,3 +390,28 @@
     });
     show(0, false);
   })();
+
+  /* Typewriter placeholders on the tour form's name fields: example names type and erase
+     so it is obvious the line is a field to write in. Stops on focus or once filled. */
+  (function () {
+    var fields = document.querySelectorAll('.tj-input[data-type]');
+    if (!fields.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    fields.forEach(function (f) {
+      var words = f.getAttribute('data-type').split(','), base = f.getAttribute('placeholder');
+      var w = 0, i = 0, del = false, timer = null, caret = true;
+      var visible = function () { var r = f.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; };
+      var step = function () {
+        if (document.activeElement === f || f.value) { f.setAttribute('placeholder', base); timer = null; return; }
+        if (!visible()) { timer = setTimeout(step, 600); return; }
+        var word = words[w];
+        if (!del) { i++; if (i === word.length) { del = true; caret = true; f.setAttribute('placeholder', word + '|'); timer = setTimeout(step, 1600); return; } }
+        else { i--; if (i === 0) { del = false; w = (w + 1) % words.length; f.setAttribute('placeholder', '|'); timer = setTimeout(step, 450); return; } }
+        f.setAttribute('placeholder', word.slice(0, i) + '|');
+        timer = setTimeout(step, del ? 55 : 110 + Math.random() * 60);
+      };
+      var start = function () { if (!timer && !f.value && document.activeElement !== f) { i = 0; del = false; timer = setTimeout(step, 500); } };
+      f.addEventListener('focus', function () { clearTimeout(timer); timer = null; f.setAttribute('placeholder', base); });
+      f.addEventListener('blur', start);
+      start();
+    });
+  })();

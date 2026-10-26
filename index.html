@@ -534,7 +534,7 @@
             </div>
             <div class="tj-fields">
               <label class="tj-label" for="tj-child">Your child's first name</label>
-              <input class="tj-input" id="tj-child" name="child_name" type="text" autocomplete="off" required>
+              <input class="tj-input" id="tj-child" name="child_name" type="text" autocomplete="off" placeholder="e.g. Mia" data-type="Mia,Pim,Leo,Nara,Kai" required>
               <label class="tj-label" for="tj-age">Age</label>
               <div class="tj-age">
                 <input class="tj-range" id="tj-age" type="range" min="1" max="6" step="1" value="3" aria-valuetext="3 years old">
@@ -578,9 +578,9 @@
         <fieldset class="tj-step" data-step="3">
           <legend class="tj-q" tabindex="-1"><span class="tj-n">3 of 3</span>How can we reach you?</legend>
           <div class="tj-grid">
-            <div class="tj-f tj-f-wide"><label class="tj-label" for="tj-name">Your name</label><input class="tj-input" id="tj-name" name="name" type="text" autocomplete="name" required></div>
-            <div class="tj-f"><label class="tj-label" for="tj-email">Email</label><input class="tj-input" id="tj-email" name="email" type="email" autocomplete="email" required></div>
-            <div class="tj-f"><label class="tj-label" for="tj-phone">Phone <span class="tj-opt">(optional)</span></label><input class="tj-input" id="tj-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+            <div class="tj-f tj-f-wide"><label class="tj-label" for="tj-name">Your name</label><input class="tj-input" id="tj-name" name="name" type="text" autocomplete="name" placeholder="e.g. Anna Lee" data-type="Anna Lee,Somchai Rattanakul,James Carter" required></div>
+            <div class="tj-f"><label class="tj-label" for="tj-email">Email</label><input class="tj-input" id="tj-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required></div>
+            <div class="tj-f"><label class="tj-label" for="tj-phone">Phone <span class="tj-opt">(optional)</span></label><input class="tj-input" id="tj-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+66"></div>
           </div>
           <p class="tj-note">By sending this form you agree to our <a href="#">privacy policy</a>.</p>
         </fieldset>

@@ -562,6 +562,7 @@
   .tj-label { display: block; font-family: var(--rt-font-head); font-weight: 600; font-size: 13px; color: var(--rt-ink); margin: 0 0 4px; }
   .tj-opt { font-weight: 500; color: var(--rt-slate); }
   .tj-input { width: 100%; box-sizing: border-box; font: inherit; font-family: var(--rt-font-head); font-size: 20px; color: var(--rt-ink); background: transparent url("/assets/img/chalk-underline.png") left bottom / 100% 6px no-repeat; border: 0; padding: 6px 2px 12px; margin: 0 0 16px; border-radius: 0; transition: background-size .2s ease; }
+  .tj-input::placeholder { color: var(--rt-slate); opacity: .75; }
   .tj-input:focus { outline: none; background-size: 100% 9px; }
   .tj-input:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 4px; border-radius: 4px; }
   .tj-input.is-invalid { background-image: linear-gradient(#B54A36, #B54A36); background-size: 100% 2px; }
