@@ -536,37 +536,117 @@
   .final-contact a { color: var(--rt-ink); font-weight: 600; text-decoration: none; white-space: nowrap; }
   .final-contact a:hover, .final-contact a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 
-  /* Tour request: a sentence the parent completes, after the Inspira contact form */
-  .tour-card { background: #fff; border: 1px solid var(--rt-border); border-radius: 24px; padding: 40px 42px 34px; box-shadow: 0 24px 70px -30px rgba(46,53,64,.35), 0 2px 8px rgba(46,53,64,.06); }
-  .tf-sentence { margin: 0 0 26px; font-family: var(--rt-font-head); font-weight: 500; font-size: 22px; line-height: 2.05; color: var(--rt-ink); }
-  .tf-field { font: inherit; font-size: 20px; line-height: 1.3; color: var(--rt-ink); background: var(--rt-canopy-tint); border: 0; border-bottom: 2px solid var(--rt-canopy); border-radius: 8px 8px 0 0; padding: 2px 10px; margin: 0 4px; vertical-align: baseline; max-width: 100%; box-sizing: border-box; transition: border-color .15s ease, background-color .15s ease; }
-  .tf-field::placeholder { color: var(--rt-slate); opacity: .8; }
-  .tf-field:hover { border-bottom-color: var(--rt-slate); }
-  .tf-field:focus { outline: none; border-bottom-color: var(--rt-ink); background: #fff; box-shadow: 0 0 0 2px var(--rt-canopy-tint); }
-  .tf-field:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 2px; }
-  .tf-select { appearance: none; -webkit-appearance: none; padding-right: 30px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232E3540' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: calc(100% - 10px) 50%; }
-  .tf-select:invalid { color: var(--rt-slate); }
-  .tf-w-name { width: 11em; } .tf-w-email { width: 12em; } .tf-w-phone { width: 9.5em; }
-  .tf-field.is-invalid { border-bottom-color: #B54A36; background-color: #FBEDEA; }
-  .tf-chunk { white-space: nowrap; }
-  .tf-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
-  .tf-actions .btn-tour { border: 0; cursor: pointer; }
-  .tf-actions .btn-tour[disabled] { opacity: .6; cursor: progress; }
-  .tf-note { margin: 0; font-size: 13px; color: var(--rt-slate); }
-  .tf-note a { color: var(--rt-ink); }
-  .tf-error { margin: 16px 0 0; font-size: 14px; color: #B54A36; }
-  .tf-done { outline: none; }
-  .tf-done-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 24px; color: var(--rt-ink); margin: 0 0 8px; }
-  .tf-done p { margin: 0; font-size: 16px; color: var(--rt-ink); }
-  @media (prefers-reduced-motion: reduce) { .tf-field { transition: none; } }
+  /* ---------- Tour request: "A visit in three small steps" ----------
+     Drawing-paper card; the child's tree grows with their age, footprints walk towards the
+     school door as the steps advance. Without JS all three steps show as one form. */
+  .tour-card { position: relative; background: #FFFEFB url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .18 0 0 0 0 .21 0 0 0 0 .25 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); border: 1px solid var(--rt-border); border-radius: 24px; padding: 30px 38px 32px; box-shadow: 0 24px 70px -30px rgba(46,53,64,.35), 0 2px 8px rgba(46,53,64,.06); }
+  .tj-progress { display: none; }
+  .tj-card.tj-js .tj-progress { display: flex; align-items: center; gap: 6px; margin: 0 0 22px; }
+  .tj-stop { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--rt-canopy); background: #fff; flex: none; transition: background-color .3s ease; }
+  .tj-stop.on { background: var(--rt-canopy); }
+  .tj-pair { flex: 1; display: flex; justify-content: center; gap: 2px; }
+  .tj-pair svg { width: 22px; height: 22px; opacity: 0; transform: translateY(4px); transition: opacity .4s ease, transform .4s ease; }
+  .tj-pair svg:nth-child(2) { transform: translateY(-4px); transition-delay: .15s; }
+  .tj-pair svg path, .tj-pair svg ellipse { fill: var(--rt-canopy); }
+  .tj-pair.on svg { opacity: 1; transform: translateY(5px); }
+  .tj-pair.on svg:nth-child(2) { transform: translateY(-5px); }
+  .tj-door svg { width: 28px; height: 28px; fill: none; stroke: var(--rt-slate); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .3s ease; }
+  .tj-door.on svg { stroke: var(--rt-ink); }
+
+  .tj-step { border: 0; margin: 0 0 24px; padding: 0; min-width: 0; }
+  .tj-card.tj-js .tj-step { display: none; margin: 0; min-height: 270px; }
+  .tj-card.tj-js .tj-step.is-current { display: block; animation: tj-in .35s ease both; }
+  @keyframes tj-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+  .tj-q { padding: 0; margin: 0 0 20px; font-family: var(--rt-font-head); font-weight: 600; font-size: 26px; line-height: 1.25; color: var(--rt-ink); outline: none; }
+  .tj-n { display: block; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); margin-bottom: 6px; }
+  .tj-label { display: block; font-family: var(--rt-font-head); font-weight: 600; font-size: 13px; color: var(--rt-ink); margin: 0 0 4px; }
+  .tj-opt { font-weight: 500; color: var(--rt-slate); }
+  .tj-input { width: 100%; box-sizing: border-box; font: inherit; font-family: var(--rt-font-head); font-size: 20px; color: var(--rt-ink); background: transparent url("/assets/img/chalk-underline.png") left bottom / 100% 6px no-repeat; border: 0; padding: 6px 2px 12px; margin: 0 0 16px; border-radius: 0; transition: background-size .2s ease; }
+  .tj-input:focus { outline: none; background-size: 100% 9px; }
+  .tj-input:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 4px; border-radius: 4px; }
+  .tj-input.is-invalid { background-image: linear-gradient(#B54A36, #B54A36); background-size: 100% 2px; }
+
+  .tj-who { display: grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center; }
+  .tj-tree svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .tj-ground { fill: var(--rt-canopy-tint); }
+  .tj-trunk path { fill: none; stroke: var(--rt-slate); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+  .tj-trunk { transform-origin: 80px 148px; transform: scaleY(var(--trunk, .7)); transition: transform .5s cubic-bezier(.34,1.4,.64,1); }
+  .tj-crown { transform-origin: 80px 96px; transform: translateY(var(--lift, 14px)) scale(var(--grow, .7)); transition: transform .5s cubic-bezier(.34,1.4,.64,1); }
+  .tj-crown path { fill: var(--rt-canopy); }
+  .tj-age { display: flex; align-items: center; gap: 14px; }
+  .tj-range { flex: 1; -webkit-appearance: none; appearance: none; height: 44px; background: transparent; cursor: pointer; }
+  .tj-range::-webkit-slider-runnable-track { height: 6px; border-radius: 6px; background: var(--rt-canopy); }
+  .tj-range::-moz-range-track { height: 6px; border-radius: 6px; background: var(--rt-canopy); }
+  .tj-range::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: #fff; border: 3px solid var(--rt-ink); box-shadow: 0 2px 8px rgba(46,53,64,.2); }
+  .tj-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid var(--rt-ink); }
+  .tj-range:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 2px; border-radius: 8px; }
+  .tj-age-out { font-family: var(--rt-font-head); font-weight: 600; font-size: 17px; color: var(--rt-ink); min-width: 7.5em; }
+
+  .tj-campuses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .tj-campus { position: relative; cursor: pointer; }
+  .tj-campus input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .tj-campus-card { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 150px; padding: 16px; box-sizing: border-box; border-radius: 18px; background: #fff; border: 1.5px solid var(--rt-border); transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; height: 100%; }
+  .tj-campus-can { position: absolute; width: 120%; right: -40%; bottom: -26%; opacity: .5; transition: opacity .2s ease, transform .4s ease; }
+  .tj-campus-can path { fill: var(--rt-canopy-tint); }
+  .tj-campus-name { position: relative; font-family: var(--rt-font-head); font-weight: 600; font-size: 19px; color: var(--rt-ink); }
+  .tj-campus .badge { position: relative; font-size: 10px; }
+  .tj-campus-act { position: relative; margin-top: auto; font-size: 13px; font-weight: 600; color: var(--rt-slate); }
+  .tj-campus:hover .tj-campus-card { border-color: var(--rt-canopy); transform: translateY(-2px); }
+  .tj-campus input:checked + .tj-campus-card { border-color: var(--rt-ink); box-shadow: 0 10px 26px rgba(46,53,64,.12); }
+  .tj-campus input:checked + .tj-campus-card .tj-campus-can { opacity: 1; transform: scale(1.08); }
+  .tj-campus input:checked + .tj-campus-card .tj-campus-can path { fill: var(--rt-canopy); }
+  .tj-campus input:checked + .tj-campus-card .tj-campus-act { color: var(--rt-ink); }
+  .tj-campus input:focus-visible + .tj-campus-card { outline: 2px solid var(--rt-accent); outline-offset: 3px; }
+  .tj-campuses.is-invalid .tj-campus-card { border-color: #B54A36; }
+
+  .tj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+  .tj-f-wide { grid-column: 1 / -1; }
+  .tj-note { margin: 0; font-size: 13px; color: var(--rt-slate); }
+  .tj-note a { color: var(--rt-ink); }
+  .tj-error { margin: 12px 0 0; font-size: 14px; color: #B54A36; }
+  .tj-nav { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+  .tour-card:not(.tj-js) .tj-back, .tour-card:not(.tj-js) .tj-next { display: none; }
+  .tj-card.tj-js .tj-nav { margin-top: 22px; }
+  .tj-back { border: 0; background: none; font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; color: var(--rt-slate); cursor: pointer; min-height: 44px; padding: 0 6px; }
+  .tj-back:hover { color: var(--rt-ink); }
+  .tj-back[hidden] { display: none; }
+  .tj-next { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 26px; border: 0; border-radius: var(--rt-radius-btn); background: var(--rt-ink); color: #fff; font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; cursor: pointer; }
+  .tj-next:hover { background: #1f252e; }
+  .tj-next:focus-visible, .tj-back:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 3px; }
+  .tj-submit { margin-left: auto; border: 0; cursor: pointer; }
+  .tj-submit[disabled] { opacity: .6; cursor: progress; }
+  .tj-submit.is-interest { background: transparent; color: var(--rt-ink); box-shadow: inset 0 0 0 1.5px var(--rt-ink); }
+  .tj-next[hidden], .tj-submit[hidden] { display: none; }
+
+  .tj-done { outline: none; text-align: center; padding: 10px 0 6px; }
+  .tj-tree-done { width: 130px; margin: 0 auto 10px; }
+  .tj-tree-done .tj-trunk { animation: tj-trunk .7s cubic-bezier(.34,1.4,.64,1) both; }
+  .tj-tree-done .tj-crown { animation: tj-crown .8s .25s cubic-bezier(.34,1.4,.64,1) both; }
+  @keyframes tj-trunk { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes tj-crown { from { transform: scale(0); } to { transform: scale(1); } }
+  .tj-done .tj-done-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 24px; line-height: 1.3; color: var(--rt-ink); margin: 0 0 8px; text-wrap: balance; }
+  .tj-done p { margin: 0; font-size: 16px; color: var(--rt-ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tj-card.tj-js .tj-step.is-current, .tj-tree-done .tj-trunk, .tj-tree-done .tj-crown { animation: none; }
+    .tj-trunk, .tj-crown, .tj-pair svg, .tj-input, .tj-campus-card, .tj-campus-can, .tj-stop { transition: none; }
+  }
   @media (max-width: 960px) {
     .final-inner { grid-template-columns: 1fr; gap: 32px; padding-block: 56px; }
-    .tour-card { padding: 28px 22px 26px; border-radius: 20px; }
-    .tf-sentence { font-size: 18px; line-height: 2.1; }
-    .tf-field { font-size: 17px; margin: 2px 0; }
-    .tf-chunk { display: flex; align-items: baseline; width: 100%; margin: 2px 0; }
-    .tf-chunk .tf-field { flex: 1 1 auto; width: auto; min-width: 0; margin: 0 2px 0 0; }
-    .tf-actions .btn-tour { width: 100%; justify-content: center; }
+    .tour-card { padding: 24px 20px 24px; border-radius: 20px; }
+    .tj-q { font-size: 22px; }
+    .tj-card.tj-js .tj-step { min-height: 0; }
+    .tj-who { grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: start; }
+    .tj-age { flex-wrap: wrap; gap: 4px 12px; }
+    .tj-range { flex: 1 1 100%; }
+    .tj-age-out { min-width: 0; font-size: 16px; }
+    .tj-fields { min-width: 0; }
+    .tj-campuses { grid-template-columns: 1fr; gap: 10px; }
+    .tj-campus-card { min-height: 0; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 14px 16px; }
+    .tj-campus-act { margin: 0 0 0 auto; }
+    .tj-campus-can { width: 60%; right: -18%; bottom: -60%; }
+    .tj-grid { grid-template-columns: 1fr; }
+    .tj-input { font-size: 18px; }
   }
 
   /* ---------- Heading scale: one size for the H1 and every section H2 ---------- */

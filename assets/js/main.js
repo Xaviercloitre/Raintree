@@ -295,37 +295,98 @@
     measure(); current = target; draw(current);
   })();
 
-  /* Tour request form: inline validation, Netlify Forms submission without leaving the page,
-     a per-campus key event for GA4 (tour booked, or Bang Na interest). */
+  /* Tour request: "A visit in three small steps". One Netlify form split into three steps;
+     the tree grows with the child's age, footprints walk to the door as steps advance,
+     and the thank-you uses the child's name. GA4: tour_booked / bangna_interest per campus. */
   (function () {
     var form = document.getElementById('tour-form');
     if (!form) return;
-    var campus = document.getElementById('tf-campus');
-    var btn = document.getElementById('tf-submit');
-    var err = document.getElementById('tf-error');
-    var done = document.getElementById('tf-done');
-    var label = function () { btn.textContent = campus.value === 'Bang Na' ? 'Register interest' : 'Book a School Tour'; };
-    campus.addEventListener('change', label);
+    var card = form.closest('.tj-card');
+    var steps = form.querySelectorAll('.tj-step');
+    var back = document.getElementById('tj-back'), next = document.getElementById('tj-next'), submit = document.getElementById('tf-submit');
+    var err = document.getElementById('tf-error'), done = document.getElementById('tf-done'), status = document.getElementById('tj-status');
+    var range = document.getElementById('tj-age'), out = document.getElementById('tj-age-out'), ageVal = document.getElementById('tj-age-val');
+    var child = document.getElementById('tj-child');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cur = 0;
+    card.classList.add('tj-js');
+    window.dataLayer = window.dataLayer || [];
+
+    /* tree grows from a seedling at 1 to a full canopy at 6 */
+    var grow = function () {
+      var a = +range.value, t = (a - 1) / 5;
+      var label = a + (a === 1 ? ' year old' : ' years old');
+      out.textContent = label; ageVal.value = label; range.setAttribute('aria-valuetext', label);
+      card.style.setProperty('--grow', (0.38 + 0.62 * t).toFixed(3));
+      card.style.setProperty('--trunk', (0.45 + 0.55 * t).toFixed(3));
+      card.style.setProperty('--lift', (34 * (1 - t)).toFixed(1) + 'px');
+    };
+    range.addEventListener('input', grow); grow();
+
+    var campusVal = function () { var c = form.querySelector('input[name="campus"]:checked'); return c ? c.value : ''; };
+    var setSubmit = function () {
+      var bn = campusVal() === 'Bang Na';
+      submit.textContent = bn ? 'Register interest' : 'Book a School Tour';
+      submit.classList.toggle('is-interest', bn);
+    };
+    form.querySelectorAll('input[name="campus"]').forEach(function (r) { r.addEventListener('change', function () { setSubmit(); form.querySelector('.tj-campuses').classList.remove('is-invalid'); err.hidden = true; }); });
+
+    var show = function (i, focus) {
+      cur = i;
+      steps.forEach(function (s, k) { s.classList.toggle('is-current', k === i); });
+      for (var k = 1; k <= 3; k++) {
+        var stop = card.querySelector('.tj-stop-' + k); if (stop) stop.classList.toggle('on', k <= i + 1);
+        var pr = card.querySelector('.tj-pair-' + k); if (pr) pr.classList.toggle('on', k <= i);
+      }
+      back.hidden = i === 0;
+      next.hidden = i === steps.length - 1;
+      submit.hidden = i !== steps.length - 1;
+      err.hidden = true;
+      status.textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+      if (focus) steps[i].querySelector('.tj-q').focus({ preventScroll: true });
+      if (focus) window.dataLayer.push({ event: 'tour_form_step', step: i + 1 });
+    };
+
+    var valid = function (i) {
+      var s = steps[i], ok = true, first = null;
+      s.querySelectorAll('.tj-input').forEach(function (f) {
+        var good = f.checkValidity(); f.classList.toggle('is-invalid', !good);
+        if (!good && !first) first = f; ok = ok && good;
+      });
+      if (i === 1 && !campusVal()) { ok = false; form.querySelector('.tj-campuses').classList.add('is-invalid'); first = first || form.querySelector('input[name="campus"]'); }
+      if (!ok) {
+        err.textContent = i === 0 ? "Please add your child's first name." : i === 1 ? 'Please choose a campus.' : 'Please add your name and a valid email address.';
+        err.hidden = false; if (first) first.focus();
+      }
+      return ok;
+    };
     form.addEventListener('input', function (e) { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) e.target.classList.remove('is-invalid'); });
-    form.addEventListener('change', function (e) { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) e.target.classList.remove('is-invalid'); });
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < steps.length - 1) { e.preventDefault(); next.click(); }
+    });
+    next.addEventListener('click', function () { if (valid(cur)) show(cur + 1, true); });
+    back.addEventListener('click', function () { show(cur - 1, true); });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var bad = [].filter.call(form.querySelectorAll('.tf-field'), function (f) { var ok = f.checkValidity(); f.classList.toggle('is-invalid', !ok); return !ok; });
-      if (bad.length) { err.hidden = false; bad[0].focus(); return; }
-      err.hidden = true;
-      btn.disabled = true;
+      for (var i = 0; i < steps.length; i++) { if (!valid(i)) { show(i, false); valid(i); return; } }
+      submit.disabled = true;
       fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() })
         .then(function (r) { if (!r.ok) throw new Error(r.status); })
         .then(function () {
-          window.dataLayer = window.dataLayer || [];
-          var bangna = campus.value === 'Bang Na';
-          window.dataLayer.push({ event: bangna ? 'bangna_interest' : 'tour_booked', campus: campus.value, form_location: 'homepage_final' });
+          var c = campusVal(), name = child.value.trim().split(/\s+/)[0];
+          window.dataLayer.push({ event: c === 'Bang Na' ? 'bangna_interest' : 'tour_booked', campus: c, form_location: 'homepage_final' });
+          document.getElementById('tj-done-title').textContent = c === 'Bang Na'
+            ? 'Thank you. We will tell you about places for ' + name + ' at Bang Na first.'
+            : "We can't wait to meet " + name + ' at ' + c + '.';
+          card.querySelectorAll('.tj-stop, .tj-pair, .tj-door').forEach(function (el) { el.classList.add('on'); });
           form.hidden = true; done.hidden = false; done.focus();
         })
         .catch(function () {
-          btn.disabled = false;
+          submit.disabled = false;
           err.textContent = 'Sorry, something went wrong sending your request. Please try again, or call the campus directly.';
           err.hidden = false;
         });
     });
+    show(0, false);
   })();
