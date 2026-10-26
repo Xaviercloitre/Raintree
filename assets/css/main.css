@@ -259,15 +259,18 @@
   .day { position: relative; overflow: hidden; background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(255,255,255,.75) 0%, rgba(255,255,255,0) 70%), var(--rt-canopy-tint); }
   .day-canopies { position: absolute; inset: 0; pointer-events: none; }
   .day-canopies svg { position: absolute; }
-  .dcan-1 { width: 560px; right: -160px; top: -120px; opacity: .45; animation: canopy-sway 28s ease-in-out infinite alternate; }
-  .dcan-1 path { fill: var(--rt-canopy); }
-  .dcan-2 { width: 420px; left: -150px; bottom: -110px; opacity: .8; animation: canopy-sway 34s ease-in-out infinite alternate-reverse; }
+  .dcan-2 { width: 420px; left: -150px; bottom: -110px; opacity: .6; animation: canopy-sway 34s ease-in-out infinite alternate-reverse; }
   .dcan-2 path { fill: #fff; }
-  .dcan-3 { width: 180px; left: 38%; top: 40px; opacity: .35; }
-  .dcan-3 path { fill: var(--rt-canopy); }
+  .player-wrap { position: relative; }
+  .pw-can { position: absolute; z-index: 0; pointer-events: none; }
+  .pw-can-1 { width: 46%; left: -9%; top: -16%; opacity: .55; }
+  .pw-can-1 path { fill: var(--rt-canopy); }
+  .pw-can-2 { width: 52%; right: -10%; bottom: -20%; opacity: .9; }
+  .pw-can-2 path { fill: #fff; }
+  .player-wrap .player { z-index: 1; }
   .day-inner { position: relative; z-index: 1; }
-  @media (prefers-reduced-motion: reduce) { .dcan-1, .dcan-2 { animation: none; } }
-  @media (max-width: 960px) { .dcan-1 { width: 360px; right: -140px; top: auto; bottom: 30%; } .dcan-3 { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .dcan-2 { animation: none; } }
+  @media (max-width: 960px) { .pw-can-1 { left: -6%; top: -12%; } .pw-can-2 { right: -6%; bottom: -14%; } }
   .day-inner { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 88px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
   .day h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 14px; }
   .day .day-lead { font-size: 17px; line-height: 1.6; color: var(--rt-ink); margin: 0 0 32px; max-width: 46ch; }
