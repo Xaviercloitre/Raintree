@@ -224,33 +224,23 @@
   })();
 
   /* Approach pillars: card deck. Each card is slightly turned behind the one in front.
-     Desktop: the deck is pinned and the front card lifts away as the parent scrolls.
-     Mobile: nothing is pinned, so scrolling stays free in both directions; the deck rises in
-     once when it first appears, and a tap (or a sideways swipe) sends the front card away. */
+     Desktop and mobile alike: the deck is pinned and the front card lifts away as the parent
+     scrolls down; scrolling back up brings the cards back. No taps, hints or dots. */
   (function () {
     var sec = document.querySelector('.approach');
     if (!sec || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var cards = sec.querySelectorAll('.pillar');
     if (cards.length < 2) return;
     sec.classList.add('deck');
-    var deck = sec.querySelector('.pillars');
     var inner = sec.querySelector('.approach-inner');
+    var head = sec.querySelector('.approach-head');
     var stage = sec.querySelector('.pillars-stage');
     var mq = window.matchMedia('(max-width: 960px)');
-    var REST = [-4, 3, -2, 4, -3], N = cards.length - 1;
+    var N = cards.length - 1;
     var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
     var ease = function (x) { return x * x * (3 - 2 * x); };
-    var vh = document.documentElement.clientHeight, lastW = window.innerWidth;
-    var target = 0, current = 0, running = false, visible = false, idx = 0, introDone = false, done = false;
-    var tapMode = function () { return mq.matches; };   /* desktop always follows the scroll */
-
-    /* hint under the mobile deck: "Tap to see the next" and three dots */
-    var hint = document.createElement('p');
-    hint.className = 'deck-hint';
-    hint.setAttribute('aria-hidden', 'true');
-    hint.innerHTML = '<span class="dh-text">Tap the card to see the next</span><span class="dh-dots">' + Array(cards.length + 1).join('<i></i>') + '</span>';
-    deck.after(hint);
-    var dots = hint.querySelectorAll('i'), hintText = hint.querySelector('.dh-text');
+    var vh = document.documentElement.clientHeight;
+    var target = 0, current = 0, running = false, visible = false;
 
     /* Fanned deck, after the Indygo reference: cards waiting behind are visibly turned
        (alternating left and right, more the further back they are) and slightly smaller;
@@ -268,98 +258,46 @@
         } else {
           var leave = ease(clamp(-d));
           if (i === N) leave = 0;
-          rot = -16 * leave; sc = 1;
-          if (tapMode()) { x = -120 * leave; y = -6 * leave; rot = -18 * leave; }
-          else { x = -10 * leave; y = -118 * leave; }
+          rot = -16 * leave; sc = 1; x = -10 * leave; y = -118 * leave;
           op = 1 - clamp((leave - .5) / .5);
         }
         cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
         cards[i].style.opacity = op.toFixed(3);
-        cards[i].setAttribute('aria-hidden', tapMode() && i !== Math.round(p) ? 'true' : 'false');
       }
     };
     var loop = function () {
-      current += (target - current) * (tapMode() ? 0.2 : 0.42);
+      current += (target - current) * 0.42;
       if (Math.abs(target - current) < 0.0005) current = target;
       draw(current);
       if (current !== target) requestAnimationFrame(loop); else running = false;
     };
     var kick = function () { if (!running) { running = true; requestAnimationFrame(loop); } };
 
-    /* desktop: scroll position drives the deck */
+    /* the scroll position drives the deck */
     var measure = function () {
-      if (tapMode()) return;
       var box = inner.getBoundingClientRect(), cs = getComputedStyle(inner);
       var pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
-      var run = Math.max(1, box.height - pt - pb - stage.offsetHeight);
-      target = clamp(-box.top / run) * N;
-    };
-    var finish = function () {
-      if (done) return;
-      var before = inner.getBoundingClientRect().height;
-      done = true;
-      sec.classList.add('deck-done');
-      var after = inner.getBoundingClientRect().height;
-      var html = document.documentElement, sb = html.style.scrollBehavior;
-      html.style.scrollBehavior = 'auto';
-      window.scrollBy(0, after - before);   /* keep what is on screen exactly where it was */
-      html.style.scrollBehavior = sb;
-      mobileSetup();
-      idx = 0; current = 0; setIdx(0); draw(0);
-    };
-
-    /* mobile: tap or swipe */
-    var setIdx = function (k) {
-      idx = (k + cards.length) % cards.length;
-      target = idx;
-      dots.forEach(function (d, i) { d.classList.toggle('on', i === idx); });
-      var verb = mq.matches ? 'Tap' : 'Click';
-      hintText.textContent = idx === N ? verb + ' to start again' : verb + ' the card to see the next';
-      kick();
-    };
-    var mobileSetup = function () {
-      if (tapMode()) {
-        deck.setAttribute('role', 'button');
-        deck.setAttribute('tabindex', '0');
-        deck.setAttribute('aria-label', 'Show the next card');
-        setIdx(idx);
+      if (mq.matches) {
+        /* mobile: the heading scrolls away first, then the deck pins for one run of spacer */
+        var run = Math.max(1, parseFloat(cs.getPropertyValue('--run-m')) / 100 * vh);
+        var hs = getComputedStyle(head);
+        var natural = box.top + pt + head.offsetHeight + parseFloat(hs.marginBottom);
+        target = clamp((parseFloat(getComputedStyle(stage).top) - natural) / run) * N;
       } else {
-        deck.removeAttribute('role'); deck.removeAttribute('tabindex'); deck.removeAttribute('aria-label');
-        cards.forEach(function (c) { c.removeAttribute('aria-hidden'); });
-        measure(); kick();
+        var runD = Math.max(1, box.height - pt - pb - stage.offsetHeight);
+        target = clamp(-box.top / runD) * N;
       }
     };
-    deck.addEventListener('click', function () { if (tapMode()) setIdx(idx + 1); });
-    deck.addEventListener('keydown', function (e) {
-      if (!tapMode()) return;
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIdx(idx + 1); }
-      if (e.key === 'ArrowRight') setIdx(idx + 1);
-      if (e.key === 'ArrowLeft') setIdx(idx - 1);
-    });
-    var sx = 0, sy = 0, swiped = false;
-    deck.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true });
-    deck.addEventListener('touchend', function (e) {
-      if (!tapMode()) return;
-      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-        swiped = true; setIdx(idx + (dx < 0 ? 1 : -1));
-        e.preventDefault();   /* the swipe already moved the deck; skip the click */
-      }
-    });
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) {
         visible = en[0].isIntersecting;
-        if (visible && mq.matches && !introDone) { introDone = true; deck.classList.add('deck-intro'); }
         if (visible) { measure(); kick(); }
-      }, { rootMargin: '0px 0px -15% 0px' }).observe(deck);
+      }).observe(inner);
     }
-    window.addEventListener('scroll', function () { if (!tapMode() && (visible || inner.getBoundingClientRect().bottom < vh)) { measure(); kick(); } }, { passive: true });
-    window.addEventListener('resize', function () {
-      if (window.innerWidth !== lastW) { lastW = window.innerWidth; vh = document.documentElement.clientHeight; mobileSetup(); }
-    });
-    mobileSetup();
-    current = target; draw(current);
+    window.addEventListener('scroll', function () { if (visible || inner.getBoundingClientRect().bottom < vh) { measure(); kick(); } }, { passive: true });
+    window.addEventListener('resize', function () { vh = document.documentElement.clientHeight; measure(); kick(); });
+    measure(); current = target; draw(current);
   })();
 
   /* Tour request: "A visit in three small steps". One Netlify form split into three steps;
