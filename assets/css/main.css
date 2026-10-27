@@ -76,6 +76,27 @@
     .navitem:nth-child(5) .panel { --cols: 3; }
     .panel.campuses a .campus-chip { flex-wrap: wrap; justify-content: flex-start; }
   }
+  /* Learning mega panel: link list + feature card */
+  @media (min-width: 961px) {
+    .panel.mega { display: grid; grid-template-columns: 250px 190px 230px; gap: 0 12px; padding: 14px; align-items: start; }
+    .panel.mega .mega-col { display: flex; flex-direction: column; gap: 2px; padding: 4px 6px 4px 0; }
+    .panel.mega .mega-more { border-left: 1px solid var(--rt-border); padding-left: 12px; align-self: stretch; }
+    .panel.mega .mega-label { margin: 4px 12px 8px; font-family: var(--rt-font-head); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--rt-slate); }
+    .panel.mega .mega-col a { min-height: 44px; padding: 9px 12px; background: transparent; gap: 1px; font-size: 15px; }
+    .panel.mega .mega-col a::after { right: 12px; bottom: auto; top: 50%; transform: translate(-4px,-50%); }
+    .panel.mega .mega-col a:hover::after, .panel.mega .mega-col a:focus-visible::after { transform: translate(0,-50%); }
+    .panel.mega .mega-col a small { margin-top: 0; font-size: 13px; }
+    .panel.mega .mega-col a:hover, .panel.mega .mega-col a:focus-visible { background: var(--rt-canopy-tint); transform: none; }
+    .panel.mega .mega-feature { min-height: 0; padding: 10px 10px 14px; gap: 6px; background: var(--rt-canopy-tint); border-radius: 16px; font-family: var(--rt-font-body); font-weight: 400; }
+    .panel.mega .mega-feature::after { display: none; }
+    .panel.mega .mega-feature:hover, .panel.mega .mega-feature:focus-visible { background: var(--rt-canopy-tint); transform: translateY(-2px); }
+    .panel.mega .mega-img { display: block; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: var(--rt-canopy); margin-bottom: 4px; }
+    .panel.mega .mega-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+    .panel.mega .mega-feature:hover .mega-img img { transform: scale(1.04); }
+    .panel.mega .mega-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; color: var(--rt-ink); padding: 0 4px; }
+    .panel.mega .mega-text { font-size: 13px; line-height: 1.45; color: var(--rt-slate); padding: 0 4px; }
+    .panel.mega .mega-cta { font-family: var(--rt-font-head); font-weight: 600; font-size: 14px; color: var(--rt-accent); padding: 4px 4px 0; }
+  }
   @media (min-width: 961px) and (prefers-reduced-motion: reduce) { .panel a, .panel a::after { transition: none; } .panel a:hover { transform: none; } }
 
   /* Campuses panel: richer cards, fixed order, equal weight */
