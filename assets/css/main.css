@@ -196,9 +196,10 @@
   .approach.deck.deck-done .deck-hint .dh-dots { display: inline-flex; gap: 5px; }
   .approach.deck.deck-done .deck-hint .dh-dots i { width: 7px; height: 7px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
   .approach.deck.deck-done .deck-hint .dh-dots i.on { width: 18px; background: var(--rt-slate); }
-  .approach.deck .approach-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; height: calc(100vh + 100vh); height: calc(100svh + 100svh); padding-block: 0; }
-  .approach.deck .approach-head { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: flex-start; margin: 0; padding-top: clamp(96px, 16vh, 150px); box-sizing: border-box; }
-  .approach.deck .pillars-stage { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; align-items: flex-start; justify-content: center; padding-top: clamp(96px, 16vh, 150px); box-sizing: border-box; }
+  /* Pinned run: the content box is the deck height plus one screen of scrolling; padding gives normal section spacing above and below */
+  .approach.deck .approach-inner { --pin-top: clamp(104px, 15vh, 140px); --run: 100vh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; box-sizing: content-box; height: calc(360px + var(--run)); padding-top: calc(var(--pin-top) - 20px); padding-bottom: 68px; }
+  .approach.deck .approach-head { position: sticky; top: var(--pin-top); margin: 0; height: 360px; display: flex; flex-direction: column; justify-content: center; }
+  .approach.deck .pillars-stage { position: sticky; top: var(--pin-top); display: flex; align-items: center; justify-content: center; height: 360px; }
   .approach.deck .pillars { position: relative; display: block; width: min(100%, 420px); height: 320px; margin: 0; }
   .approach.deck .pillar { position: absolute; inset: 0; padding: 32px 34px 34px; justify-content: flex-end; gap: 12px; box-shadow: 0 18px 40px rgba(46,53,64,.10); will-change: transform, opacity; transform-origin: 50% 80%; backface-visibility: hidden; }
   .approach.deck .pillar:nth-child(1) { background: var(--rt-canopy); }
@@ -211,7 +212,7 @@
   .approach.deck .pillar h3 { font-size: 28px; line-height: 1.15; }
   .approach.deck .pillar p { color: var(--rt-ink); font-size: 16px; }
   @media (max-width: 960px) {
-    .approach.deck .approach-inner { grid-template-columns: 1fr; gap: 0; height: auto; padding-top: 48px; }
+    .approach.deck .approach-inner { grid-template-columns: 1fr; gap: 0; height: auto; padding-top: 48px; padding-bottom: 0; }
     .approach.deck .approach-head { position: static; height: auto; padding-top: 0; margin-bottom: 8px; }
     /* Mobile: no pinning. The deck sits in the flow; a tap or a sideways swipe sends the front card away */
     .approach.deck .pillars-stage { position: static; height: auto; display: block; padding: 0 0 56px; }

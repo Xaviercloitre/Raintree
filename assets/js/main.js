@@ -260,6 +260,7 @@
     sec.classList.add('deck');
     var deck = sec.querySelector('.pillars');
     var inner = sec.querySelector('.approach-inner');
+    var stage = sec.querySelector('.pillars-stage');
     var mq = window.matchMedia('(max-width: 960px)');
     var REST = [-4, 3, -2, 4, -3], N = cards.length - 1;
     var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
@@ -300,8 +301,10 @@
     /* desktop: scroll position drives the deck */
     var measure = function () {
       if (tapMode()) return;
-      var box = inner.getBoundingClientRect();
-      target = clamp(-box.top / Math.max(1, box.height - vh)) * N;
+      var box = inner.getBoundingClientRect(), cs = getComputedStyle(inner);
+      var pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
+      var run = Math.max(1, box.height - pt - pb - stage.offsetHeight);
+      target = clamp(-box.top / run) * N;
     };
     var finish = function () {
       if (done) return;
