@@ -71,7 +71,6 @@
     /* Columns per menu: one row where it fits, Learning in two rows of four */
     .navitem:nth-child(1) .panel { --cols: 5; }
     .navitem:nth-child(2) .panel { --cols: 4; }
-    .navitem:nth-child(4) .panel { --cols: 4; }
     .panel.campuses a .campus-chip { flex-wrap: wrap; justify-content: flex-start; }
   }
   /* Learning mega panel: link list + feature card */
