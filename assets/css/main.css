@@ -912,3 +912,9 @@
   .tour-card.is-arrived { animation: tj-arrive 1.4s ease; }
   @keyframes tj-arrive { 0% { box-shadow: 0 0 0 0 rgba(46,107,94,0); } 30% { box-shadow: 0 0 0 6px rgba(255,255,255,.9), 0 24px 70px -30px rgba(46,53,64,.35); } 100% { box-shadow: 0 24px 70px -30px rgba(46,53,64,.35), 0 2px 8px rgba(46,53,64,.06); } }
   @media (prefers-reduced-motion: reduce) { .tour-card.is-arrived { animation: none; } }
+
+/* Gentle reveal on scroll (JS adds .rv-js; content stays visible without JS) */
+.rv-js .rv { opacity: 0; translate: 0 14px; transition: opacity .7s cubic-bezier(.2,.7,.2,1) var(--rv-d, 0ms), translate .7s cubic-bezier(.2,.7,.2,1) var(--rv-d, 0ms); }
+.rv-js .rv.in { opacity: 1; translate: 0 0; }
+@media (prefers-reduced-motion: reduce) { .rv-js .rv { opacity: 1; translate: none; transition: none; } }
+@media print { .rv-js .rv { opacity: 1; translate: none; } }

@@ -497,3 +497,50 @@
       setTimeout(function () { var f = document.getElementById('tj-child'); if (f) f.focus({ preventScroll: true }); }, 700);
     });
   })();
+
+/* Gentle reveal on scroll: fade and rise once, never replays. Off for reduced motion. */
+(function () {
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var GROUPS = '.stage-cards, .campus-cards, .steps, .bento, .guide-panels';
+  var DIG = '.steps-wrap, .teachers-head, .spaces-head, .day-copy';
+  var SKIP = '.steps-trail, svg, script, [aria-hidden="true"]';
+  var inners = document.querySelectorAll('.stages-inner, .campuses-inner, .day-inner, .teachers-inner, .voices-inner, .admissions-inner, .final-inner, .spaces-inner, .guides-inner, .faq-inner, .closing-inner');
+  if (!inners.length) return;
+  document.documentElement.classList.add('rv-js');
+
+  function show(el) {
+    el.classList.add('in');
+    var d = parseInt(el.style.getPropertyValue('--rv-d'), 10) || 0;
+    setTimeout(function () { el.classList.remove('rv', 'in'); el.style.removeProperty('--rv-d'); }, 800 + d);
+  }
+  var itemIO = new IntersectionObserver(function (en) {
+    en.forEach(function (e) { if (e.isIntersecting) { show(e.target); itemIO.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  var groupIO = new IntersectionObserver(function (en) {
+    en.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      [].forEach.call(e.target.children, function (c) { if (c.classList.contains('rv')) show(c); });
+      groupIO.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+
+  function prep(el, i) {
+    el.classList.add('rv');
+    el.style.setProperty('--rv-d', Math.min(i, 4) * 70 + 'ms');
+  }
+  function collect(el, i) {
+    if (el.matches(SKIP)) return;
+    if (!el.getClientRects().length) return; /* hidden at this size: never trap it invisible */
+    if (el.getBoundingClientRect().bottom < 0) return; /* already scrolled past: leave visible */
+    if (el.matches(GROUPS)) {
+      [].forEach.call(el.children, function (c, j) { prep(c, j); });
+      groupIO.observe(el);
+    } else if (el.matches(DIG)) {
+      [].forEach.call(el.children, collect);
+    } else {
+      prep(el, i);
+      itemIO.observe(el);
+    }
+  }
+  inners.forEach(function (inner) { [].forEach.call(inner.children, collect); });
+})();
