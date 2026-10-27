@@ -221,7 +221,7 @@
     .approach.deck .pillars:focus-visible { outline: 2px solid var(--rt-accent); outline-offset: 8px; border-radius: var(--rt-radius-card); }
     .approach.deck .pillars.deck-intro { animation: deck-in .7s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes deck-in { from { opacity: 0; transform: translateY(28px) rotate(-3deg); } to { opacity: 1; transform: none; } }
-    .deck-hint { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 22px auto 0; font-size: 13px; color: var(--rt-slate); }
+    .deck-hint { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 48px auto 0; font-size: 13px; color: var(--rt-slate); }
     .deck-hint .dh-dots { display: inline-flex; gap: 5px; }
     .deck-hint .dh-dots i { width: 7px; height: 7px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
     .deck-hint .dh-dots i.on { width: 18px; background: var(--rt-slate); }
