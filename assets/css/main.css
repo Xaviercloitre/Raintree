@@ -828,6 +828,9 @@
   .fn-col a:hover, .fn-col a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 
   .footer-bottom { border-top: 1px solid var(--rt-border); padding-top: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; font-size: 14px; }
+  .footer-accred { margin: 0; color: var(--rt-slate); font-size: 14px; }
+  .footer-accred a { color: var(--rt-ink); text-decoration: none; font-weight: 600; }
+  .footer-accred a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .footer-links, .footer-social { display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 0; padding: 0; list-style: none; }
   .footer-links a { color: var(--rt-slate); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
   .footer-links a:hover { color: var(--rt-ink); }
