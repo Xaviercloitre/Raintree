@@ -201,13 +201,13 @@
   .approach.deck .approach-head { position: sticky; top: var(--pin-top); margin: 0; height: 360px; display: flex; flex-direction: column; justify-content: center; }
   .approach.deck .pillars-stage { position: sticky; top: var(--pin-top); display: flex; align-items: center; justify-content: center; height: 360px; }
   .approach.deck .pillars { position: relative; display: block; width: min(100%, 420px); height: 320px; margin: 0; }
-  .approach.deck .pillar { position: absolute; inset: 0; padding: 32px 34px 34px; justify-content: flex-end; gap: 12px; box-shadow: 0 18px 40px rgba(46,53,64,.10); will-change: transform, opacity; transform-origin: 50% 80%; backface-visibility: hidden; }
+  .approach.deck .pillar { position: absolute; inset: 0; padding: 32px 34px 34px; justify-content: flex-end; gap: 12px; box-shadow: 0 14px 34px rgba(46,53,64,.12), 0 1px 3px rgba(46,53,64,.06); will-change: transform, opacity; transform-origin: 50% 50%; backface-visibility: hidden; }
   .approach.deck .pillar:nth-child(1) { background: var(--rt-canopy); }
-  .approach.deck .pillar:nth-child(2) { background: var(--rt-canopy-tint); }
+  .approach.deck .pillar:nth-child(2) { background: #fff; border: 1px solid var(--rt-border); }
   .approach.deck .pillar:nth-child(1) { z-index: 5; } .approach.deck .pillar:nth-child(2) { z-index: 4; }
-  .approach.deck .pillar:nth-child(3) { background: #fff; border: 1px solid var(--rt-border); z-index: 3; }
-  .approach.deck .pillar:nth-child(4) { background: var(--rt-canopy); z-index: 2; }
-  .approach.deck .pillar:nth-child(5) { background: var(--rt-canopy-tint); z-index: 1; }
+  .approach.deck .pillar:nth-child(3) { background: var(--rt-canopy); z-index: 3; }
+  .approach.deck .pillar:nth-child(4) { background: #fff; border: 1px solid var(--rt-border); z-index: 2; }
+  .approach.deck .pillar:nth-child(5) { background: var(--rt-canopy); z-index: 1; }
   .approach.deck .pillar-ic { position: absolute; top: 28px; left: 32px; width: 60px; height: 60px; margin: 0; }
   .approach.deck .pillar h3 { font-size: 28px; line-height: 1.15; }
   .approach.deck .pillar p { color: var(--rt-ink); font-size: 16px; }

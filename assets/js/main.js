@@ -277,16 +277,29 @@
     deck.after(hint);
     var dots = hint.querySelectorAll('i'), hintText = hint.querySelector('.dh-text');
 
+    /* Fanned deck, after the Indygo reference: cards waiting behind are visibly turned
+       (alternating left and right, more the further back they are) and slightly smaller;
+       the front card sits straight; when it leaves it swings up and away. */
+    var FAN = [11, -10, 12, -11, 10];
     var draw = function (p) {
       for (var i = 0; i < cards.length; i++) {
-        var rest = REST[i % REST.length];
-        var come = ease(clamp(p - (i - 1)));
-        var leave = i === N ? 0 : ease(clamp(p - i));
-        var rot = rest * (1 - come) - 10 * leave;
-        var y = -112 * leave, x = -14 * leave;
-        if (tapMode()) { y = -18 * leave; x = -118 * leave; rot = rest * (1 - come) - 14 * leave; }
-        cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg)';
-        cards[i].style.opacity = (1 - clamp((leave - .55) / .45)).toFixed(3);
+        var d = i - p;                                   /* 0 = front, >0 waiting, <0 leaving */
+        var x = 0, y = 0, rot, sc, op = 1;
+        if (d >= 0) {
+          var depth = Math.min(d, 3);
+          rot = FAN[i % FAN.length] * Math.min(depth, 1) * (1 + 0.35 * Math.max(0, depth - 1));
+          sc = 1 - 0.035 * depth;
+          y = 2.2 * depth;
+        } else {
+          var leave = ease(clamp(-d));
+          if (i === N) leave = 0;
+          rot = -16 * leave; sc = 1;
+          if (tapMode()) { x = -120 * leave; y = -6 * leave; rot = -18 * leave; }
+          else { x = -10 * leave; y = -118 * leave; }
+          op = 1 - clamp((leave - .5) / .5);
+        }
+        cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+        cards[i].style.opacity = op.toFixed(3);
         cards[i].setAttribute('aria-hidden', tapMode() && i !== Math.round(p) ? 'true' : 'false');
       }
     };
