@@ -266,7 +266,7 @@
     var ease = function (x) { return x * x * (3 - 2 * x); };
     var vh = document.documentElement.clientHeight, lastW = window.innerWidth;
     var target = 0, current = 0, running = false, visible = false, idx = 0, introDone = false, done = false;
-    var tapMode = function () { return mq.matches || done; };
+    var tapMode = function () { return mq.matches; };   /* desktop always follows the scroll */
 
     /* hint under the mobile deck: "Tap to see the next" and three dots */
     var hint = document.createElement('p');
@@ -302,8 +302,6 @@
       if (tapMode()) return;
       var box = inner.getBoundingClientRect();
       target = clamp(-box.top / Math.max(1, box.height - vh)) * N;
-      /* once the parent has scrolled past the deck, it stops being pinned and becomes tap-to-flip */
-      if (box.bottom < vh * 0.35) finish();
     };
     var finish = function () {
       if (done) return;
