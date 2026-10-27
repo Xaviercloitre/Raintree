@@ -139,60 +139,20 @@
       dayPlay.remove();
     });
 
-    /* Hero video background: YouTube clip 0:53 to 1:20 on a muted loop.
-       Demo wiring only; the build self-hosts a trimmed MP4/WebM instead.
-       All devices; never under reduced motion or data saver; the placeholder scene shows otherwise or while loading. */
-    var START = 53, END = 80, VID = 'R0XAL3NyN40';
-    var ytWrap = document.getElementById('hero-yt-wrap');
-    var hero = document.querySelector('.hero-card');
+    /* Hero video: a self-hosted 23-second loop cut from the Prestige Perspective film
+       (muted, so it autoplays on iPhone and Android). The poster frame shows first and
+       stays for reduced motion or data saver; the video fades in once it is playing. */
+    var hv = document.getElementById('hero-video');
     var conn = navigator.connection || {};
-    var wantsVideo = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      && !conn.saveData;
-    if (ytWrap && wantsVideo) {
-      var SRC = 'https://www.youtube.com/embed/' + VID
-        + '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1'
-        + '&start=' + START + '&end=' + END;
-      var fr = document.createElement('iframe');
-      fr.setAttribute('allow', 'autoplay; encrypted-media');
-      fr.setAttribute('tabindex', '-1');
-      fr.setAttribute('title', '');
-      fr.setAttribute('aria-hidden', 'true');
-      function sizeYT() {
-        var w = hero.clientWidth, h = hero.clientHeight, ratio = 16 / 9;
-        var iw = w, ih = w / ratio;
-        if (ih < h) { ih = h; iw = h * ratio; }
-        fr.style.width = Math.ceil(iw * 1.06) + 'px';
-        fr.style.height = Math.ceil(ih * 1.06) + 'px';
+    if (hv && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !conn.saveData) {
+      hv.preload = 'auto';
+      hv.addEventListener('playing', function () { hv.classList.add('playing'); });
+      var tryPlay = function () { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); };
+      if (document.readyState === 'complete') tryPlay(); else window.addEventListener('load', tryPlay);
+      /* pause when the hero is off screen, to save battery */
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) { if (en[0].isIntersecting) tryPlay(); else hv.pause(); }).observe(hv);
       }
-      /* The iframe fades in only once YouTube reports it is PLAYING, so an error
-         screen or blocked embed never covers the placeholder scene. */
-      var playing = false;
-      window.addEventListener('message', function (e) {
-        if (e.origin.indexOf('youtube.com') === -1) return;
-        var d; try { d = JSON.parse(e.data); } catch (err) { return; }
-        var state = d && d.info && typeof d.info.playerState !== 'undefined' ? d.info.playerState
-                  : (d && d.event === 'onStateChange' ? d.info : undefined);
-        if (state === 1) { playing = true; ytWrap.classList.add('playing'); }
-        if (state === 0 || state === 2) { ytWrap.classList.remove('playing'); }
-      });
-      fr.addEventListener('load', function () {
-        var tries = 0;
-        var t = setInterval(function () {
-          if (playing || ++tries > 20) { clearInterval(t); return; }
-          try { fr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 'hero', channel: 'widget' }), '*'); } catch (err) {}
-        }, 500);
-      });
-      sizeYT();
-      fr.src = SRC;
-      document.getElementById('hero-yt').appendChild(fr);
-      window.addEventListener('resize', sizeYT);
-      /* Loop the segment: fade to the placeholder, reload at the start time, fade back in. */
-      setInterval(function () {
-        if (!playing) return;
-        playing = false;
-        ytWrap.classList.remove('playing');
-        setTimeout(function () { fr.src = SRC; }, 500);
-      }, (END - START) * 1000 + 1500);
     }
   })();
 
