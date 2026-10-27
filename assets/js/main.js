@@ -60,9 +60,48 @@
       paint();
     }
 
+
+    /* Footprints in wet sand: a print presses in when the walk reaches it, holds for a while,
+       then is slowly washed away (fading, softening and spreading) as the walk moves on.
+       Fully tied to the scroll, so scrolling back brings the prints back. */
+    var washPrint = function (p, since, maxOp) {
+      var inF = Math.max(0, Math.min(1, since / 6));                  /* quick press-in */
+      var wash = Math.max(0, Math.min(1, (since - 22) / 40));         /* long, slow wash-out */
+      var op = maxOp * inF * (1 - wash);
+      p.style.opacity = op.toFixed(3);
+      p.style.filter = 'blur(' + (0.3 + wash * 2).toFixed(2) + 'px)';   /* always slightly soft, like a shadow in sand */
+      p.style.transform = 'translate(' + (wash * 4).toFixed(1) + 'px,' + ((1 - inF) * 6).toFixed(1) + 'px) scale(' + (0.94 + 0.06 * inF + 0.08 * wash).toFixed(3) + ')';
+    };
+    /* Desktop baby steps: the child walks from step 1 to step 3 as the parent scrolls.
+       Each print appears when the scroll reaches it and stays; scrolling back above it hides it again. */
+    var trail = document.querySelector('.steps-trail');
+    if (trail) {
+      var tprints = trail.querySelectorAll('svg');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        tprints.forEach(function (p) { p.classList.add('seen'); });
+      } else {
+        var tTick = false;
+        var tWalk = function () {
+          tTick = false;
+          var r = trail.parentElement.getBoundingClientRect();
+          var vh = window.innerHeight || 1;
+          /* 0 when the steps enter at 90% of the viewport, 100 when they reach 30% */
+          var progress = (vh * 0.9 - r.top) / (vh * 0.6) * 100;
+          tprints.forEach(function (p) {
+            var at = parseFloat(p.style.left);
+            washPrint(p, progress - at, .5);
+          });
+        };
+        var tScroll = function () { if (!tTick) { tTick = true; requestAnimationFrame(tWalk); } };
+        window.addEventListener('scroll', tScroll, { passive: true });
+        window.addEventListener('resize', tScroll);
+        tWalk();
+      }
+    }
+
     /* Baby steps: the child walks down the section as the parent scrolls (mobile).
-       Each print appears when the scroll reaches it and fades again once the
-       walk has moved on, so the trail follows the scroll both ways. */
+       Each print appears when the scroll reaches it and stays;
+       scrolling back above it hides it again. */
     var stepsBg = document.querySelector('.baby-steps');
     var prints = document.querySelectorAll('.baby-steps svg');
     if (stepsBg && prints.length) {
@@ -77,7 +116,7 @@
           var progress = (vh - r.top) / (r.height + vh * 0.25) * 100;
           prints.forEach(function (p) {
             var t = parseFloat(p.getAttribute('data-t'));
-            p.classList.toggle('seen', progress >= t + 8 && progress <= t + 58);
+            washPrint(p, progress - (t + 8), .55);
           });
         };
         var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(walk); } };
@@ -100,60 +139,346 @@
       dayPlay.remove();
     });
 
-    /* Hero video background: YouTube clip 0:53 to 1:20 on a muted loop.
-       Demo wiring only; the build self-hosts a trimmed MP4/WebM instead.
-       Desktop only, never under reduced motion or data saver; the placeholder scene shows otherwise or while loading. */
-    var START = 53, END = 80, VID = 'R0XAL3NyN40';
-    var ytWrap = document.getElementById('hero-yt-wrap');
-    var hero = document.querySelector('.hero-card');
-    var conn = navigator.connection || {};
-    var wantsVideo = window.matchMedia('(min-width: 960px)').matches
-      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      && !conn.saveData;
-    if (ytWrap && wantsVideo) {
-      var SRC = 'https://www.youtube.com/embed/' + VID
-        + '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1'
-        + '&start=' + START + '&end=' + END;
-      var fr = document.createElement('iframe');
-      fr.setAttribute('allow', 'autoplay; encrypted-media');
-      fr.setAttribute('tabindex', '-1');
-      fr.setAttribute('title', '');
-      fr.setAttribute('aria-hidden', 'true');
-      function sizeYT() {
-        var w = hero.clientWidth, h = hero.clientHeight, ratio = 16 / 9;
-        var iw = w, ih = w / ratio;
-        if (ih < h) { ih = h; iw = h * ratio; }
-        fr.style.width = Math.ceil(iw * 1.06) + 'px';
-        fr.style.height = Math.ceil(ih * 1.06) + 'px';
+    /* Hero video: a self-hosted 23-second loop cut from the Prestige Perspective film.
+       Muted + playsinline + autoplay so iPhone and Android start it on their own; a lighter
+       480p file is picked on phones. If the browser still blocks it (e.g. iOS Low Power
+       Mode), it starts on the first touch or scroll. Reduced motion / data saver: poster only. */
+    var hv = document.getElementById('hero-video');
+    if (hv) {
+      var conn = navigator.connection || {};
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn.saveData;
+      hv.muted = true; hv.defaultMuted = true; hv.setAttribute('muted', '');
+      if (still) {
+        hv.removeAttribute('autoplay'); hv.pause(); hv.preload = 'none';
+      } else {
+        /* pick the source in JS too: older Safari ignores media on <source> */
+        if (window.matchMedia('(max-width: 760px)').matches) {
+          var m = hv.querySelector('source[media]');
+          if (m && hv.currentSrc.indexOf('-mobile') === -1) { hv.src = m.getAttribute('src'); }
+        }
+        hv.preload = 'auto';
+        hv.addEventListener('playing', function () { hv.classList.add('playing'); });
+        var tryPlay = function () { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); };
+        tryPlay();
+        hv.addEventListener('canplay', tryPlay, { once: true });
+        var kick = function () { if (hv.paused) tryPlay(); };
+        ['touchstart', 'scroll', 'click'].forEach(function (ev) { window.addEventListener(ev, kick, { passive: true, once: true }); });
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (en) { if (en[0].isIntersecting) tryPlay(); else hv.pause(); }).observe(hv);
+        }
       }
-      /* The iframe fades in only once YouTube reports it is PLAYING, so an error
-         screen or blocked embed never covers the placeholder scene. */
-      var playing = false;
-      window.addEventListener('message', function (e) {
-        if (e.origin.indexOf('youtube.com') === -1) return;
-        var d; try { d = JSON.parse(e.data); } catch (err) { return; }
-        var state = d && d.info && typeof d.info.playerState !== 'undefined' ? d.info.playerState
-                  : (d && d.event === 'onStateChange' ? d.info : undefined);
-        if (state === 1) { playing = true; ytWrap.classList.add('playing'); }
-        if (state === 0 || state === 2) { ytWrap.classList.remove('playing'); }
-      });
-      fr.addEventListener('load', function () {
-        var tries = 0;
-        var t = setInterval(function () {
-          if (playing || ++tries > 20) { clearInterval(t); return; }
-          try { fr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 'hero', channel: 'widget' }), '*'); } catch (err) {}
-        }, 500);
-      });
-      sizeYT();
-      fr.src = SRC;
-      document.getElementById('hero-yt').appendChild(fr);
-      window.addEventListener('resize', sizeYT);
-      /* Loop the segment: fade to the placeholder, reload at the start time, fade back in. */
-      setInterval(function () {
-        if (!playing) return;
-        playing = false;
-        ytWrap.classList.remove('playing');
-        setTimeout(function () { fr.src = SRC; }, 500);
-      }, (END - START) * 1000 + 1500);
     }
   })();
+
+  /* Chalk underlines: draw each one in once, the first time it comes into view */
+  (function () {
+    var sel = '.approach-cta a, .day-link a, .vc-more, .adm-link, .ht-team, .fc-card .fc-link, .faq .answer a';
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = document.querySelectorAll(sel);
+    if (!els.length) return;
+    document.documentElement.classList.add('chalk-js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        el.classList.add('drawing');
+        requestAnimationFrame(function () { el.classList.add('drawn'); });
+        setTimeout(function () { el.classList.remove('drawing'); }, 1200);
+      });
+    }, { threshold: 1, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* Stage cards on mobile: dot navigation for the swipe carousel */
+  (function () {
+    var track = document.querySelector('.stage-cards');
+    if (!track) return;
+    var cards = track.querySelectorAll('.stage-card');
+    var dots = document.createElement('div');
+    dots.className = 'stage-dots';
+    dots.setAttribute('aria-label', 'Choose a stage');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    cards.forEach(function (card, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', (card.querySelector('h3') || {}).textContent || ('Stage ' + (i + 1)));
+      b.addEventListener('click', function () {
+        track.scrollTo({ left: card.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0), behavior: reduce ? 'auto' : 'smooth' });
+      });
+      dots.appendChild(b);
+    });
+    track.after(dots);
+    var btns = dots.querySelectorAll('button');
+    var mark = function () {
+      var x = track.scrollLeft, best = 0, bestD = Infinity, pad = parseFloat(getComputedStyle(track).paddingLeft || 0);
+      cards.forEach(function (c, i) { var d = Math.abs(c.offsetLeft - track.offsetLeft - pad - x); if (d < bestD) { bestD = d; best = i; } });
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 4) best = cards.length - 1;
+      btns.forEach(function (b, i) { b.setAttribute('aria-current', i === best ? 'true' : 'false'); });
+    };
+    var tick = false;
+    track.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; mark(); }); } }, { passive: true });
+    window.addEventListener('resize', mark);
+    mark();
+  })();
+
+  /* Approach pillars: card deck. Each card is slightly turned behind the one in front.
+     Desktop and mobile alike: the deck is pinned and the front card lifts away as the parent
+     scrolls down; scrolling back up brings the cards back. No taps, hints or dots. */
+  (function () {
+    var sec = document.querySelector('.approach');
+    if (!sec || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var cards = sec.querySelectorAll('.pillar');
+    if (cards.length < 2) return;
+    sec.classList.add('deck');
+    var inner = sec.querySelector('.approach-inner');
+    var head = sec.querySelector('.approach-head');
+    var stage = sec.querySelector('.pillars-stage');
+    var mq = window.matchMedia('(max-width: 960px)');
+    var N = cards.length - 1;
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+    var ease = function (x) { return x * x * (3 - 2 * x); };
+    var vh = document.documentElement.clientHeight;
+    var target = 0, current = 0, running = false, visible = false;
+
+    /* Fanned deck, after the Indygo reference: cards waiting behind are visibly turned
+       (alternating left and right, more the further back they are) and slightly smaller;
+       the front card sits straight; when it leaves it swings up and away. */
+    var FAN = [11, -10, 12, -11, 10];
+    var draw = function (p) {
+      for (var i = 0; i < cards.length; i++) {
+        var d = i - p;                                   /* 0 = front, >0 waiting, <0 leaving */
+        var x = 0, y = 0, rot, sc, op = 1;
+        if (d >= 0) {
+          var depth = Math.min(d, 3);
+          rot = FAN[i % FAN.length] * Math.min(depth, 1) * (1 + 0.35 * Math.max(0, depth - 1));
+          sc = 1 - 0.035 * depth;
+          y = 2.2 * depth;
+        } else {
+          var leave = ease(clamp(-d));
+          if (i === N) leave = 0;
+          rot = -16 * leave; sc = 1; x = -10 * leave; y = -118 * leave;
+          op = 1 - clamp((leave - .5) / .5);
+        }
+        cards[i].style.transform = 'translate3d(' + x.toFixed(2) + '%,' + y.toFixed(2) + '%,0) rotate(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+        cards[i].style.opacity = op.toFixed(3);
+      }
+    };
+    var loop = function () {
+      current += (target - current) * 0.42;
+      if (Math.abs(target - current) < 0.0005) current = target;
+      draw(current);
+      if (current !== target) requestAnimationFrame(loop); else running = false;
+    };
+    var kick = function () { if (!running) { running = true; requestAnimationFrame(loop); } };
+
+    /* the scroll position drives the deck */
+    var measure = function () {
+      var box = inner.getBoundingClientRect(), cs = getComputedStyle(inner);
+      var pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
+      if (mq.matches) {
+        /* mobile: the heading scrolls away first, then the deck pins for one run of spacer */
+        var run = Math.max(1, parseFloat(cs.getPropertyValue('--run-m')) / 100 * vh);
+        var hs = getComputedStyle(head);
+        var natural = box.top + pt + head.offsetHeight + parseFloat(hs.marginBottom);
+        target = clamp((parseFloat(getComputedStyle(stage).top) - natural) / run) * N;
+      } else {
+        var runD = Math.max(1, box.height - pt - pb - stage.offsetHeight);
+        target = clamp(-box.top / runD) * N;
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        visible = en[0].isIntersecting;
+        if (visible) { measure(); kick(); }
+      }).observe(inner);
+    }
+    window.addEventListener('scroll', function () { if (visible || inner.getBoundingClientRect().bottom < vh) { measure(); kick(); } }, { passive: true });
+    window.addEventListener('resize', function () { vh = document.documentElement.clientHeight; measure(); kick(); });
+    measure(); current = target; draw(current);
+  })();
+
+  /* Tour request: "A visit in three small steps". One Netlify form split into three steps;
+     the tree grows with the child's age, footprints walk to the door as steps advance,
+     and the thank-you uses the child's name. GA4: tour_booked / bangna_interest per campus. */
+  (function () {
+    var form = document.getElementById('tour-form');
+    if (!form) return;
+    var card = form.closest('.tj-card');
+    var steps = form.querySelectorAll('.tj-step');
+    var back = document.getElementById('tj-back'), next = document.getElementById('tj-next'), submit = document.getElementById('tf-submit');
+    var err = document.getElementById('tf-error'), done = document.getElementById('tf-done'), status = document.getElementById('tj-status');
+    var range = document.getElementById('tj-age'), out = document.getElementById('tj-age-out'), ageVal = document.getElementById('tj-age-val');
+    var child = document.getElementById('tj-child');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cur = 0;
+    card.classList.add('tj-js');
+    window.dataLayer = window.dataLayer || [];
+
+    /* tree grows from a seedling at 1 to a full canopy at 6 */
+    var grow = function () {
+      var a = +range.value, t = (a - 1) / 5;
+      var label = a + (a === 1 ? ' year old' : ' years old');
+      out.textContent = label; ageVal.value = label; range.setAttribute('aria-valuetext', label);
+      card.style.setProperty('--grow', (0.38 + 0.62 * t).toFixed(3));
+      card.style.setProperty('--trunk', (0.45 + 0.55 * t).toFixed(3));
+      card.style.setProperty('--lift', (34 * (1 - t)).toFixed(1) + 'px');
+    };
+    range.addEventListener('input', grow); grow();
+
+    var campusVal = function () { var c = form.querySelector('input[name="campus"]:checked'); return c ? c.value : ''; };
+    var setSubmit = function () {
+      var bn = campusVal() === 'Bang Na';
+      submit.textContent = bn ? 'Register interest' : 'Book a School Tour';
+      submit.classList.toggle('is-interest', bn);
+    };
+    form.querySelectorAll('input[name="campus"]').forEach(function (r) { r.addEventListener('change', function () { setSubmit(); form.querySelector('.tj-campuses').classList.remove('is-invalid'); err.hidden = true; }); });
+
+    var show = function (i, focus) {
+      cur = i;
+      steps.forEach(function (s, k) { s.classList.toggle('is-current', k === i); });
+      for (var k = 1; k <= 3; k++) {
+        var stop = card.querySelector('.tj-stop-' + k); if (stop) stop.classList.toggle('on', k <= i + 1);
+        var pr = card.querySelector('.tj-pair-' + k); if (pr) pr.classList.toggle('on', k <= i);
+      }
+      back.hidden = i === 0;
+      next.hidden = i === steps.length - 1;
+      submit.hidden = i !== steps.length - 1;
+      err.hidden = true;
+      status.textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+      if (focus) steps[i].querySelector('.tj-q').focus({ preventScroll: true });
+      if (focus) window.dataLayer.push({ event: 'tour_form_step', step: i + 1 });
+    };
+
+    var valid = function (i) {
+      var s = steps[i], ok = true, first = null;
+      s.querySelectorAll('.tj-input').forEach(function (f) {
+        var good = f.checkValidity(); f.classList.toggle('is-invalid', !good);
+        if (!good && !first) first = f; ok = ok && good;
+      });
+      if (i === 1 && !campusVal()) { ok = false; form.querySelector('.tj-campuses').classList.add('is-invalid'); first = first || form.querySelector('input[name="campus"]'); }
+      if (!ok) {
+        err.textContent = i === 0 ? "Please add your child's first name." : i === 1 ? 'Please choose a campus.' : 'Please add your name and a valid email address.';
+        err.hidden = false; if (first) first.focus();
+      }
+      return ok;
+    };
+    form.addEventListener('input', function (e) { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) e.target.classList.remove('is-invalid'); });
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < steps.length - 1) { e.preventDefault(); next.click(); }
+    });
+    next.addEventListener('click', function () { if (valid(cur)) show(cur + 1, true); });
+    back.addEventListener('click', function () { show(cur - 1, true); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      for (var i = 0; i < steps.length; i++) { if (!valid(i)) { show(i, false); valid(i); return; } }
+      submit.disabled = true;
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () {
+          var c = campusVal(), name = child.value.trim().split(/\s+/)[0];
+          window.dataLayer.push({ event: c === 'Bang Na' ? 'bangna_interest' : 'tour_booked', campus: c, form_location: 'homepage_final' });
+          document.getElementById('tj-done-title').textContent = c === 'Bang Na'
+            ? 'Thank you. We will tell you about places for ' + name + ' at Bang Na first.'
+            : "We can't wait to meet " + name + ' at ' + c + '.';
+          card.querySelectorAll('.tj-stop, .tj-pair, .tj-door').forEach(function (el) { el.classList.add('on'); });
+          form.hidden = true; done.hidden = false; done.focus();
+        })
+        .catch(function () {
+          submit.disabled = false;
+          err.textContent = 'Sorry, something went wrong sending your request. Please try again, or call the campus directly.';
+          err.hidden = false;
+        });
+    });
+    show(0, false);
+  })();
+
+  /* Typewriter placeholders on the tour form's name fields: example names type and erase
+     so it is obvious the line is a field to write in. Stops on focus or once filled. */
+  (function () {
+    var fields = document.querySelectorAll('.tj-input[data-type]');
+    if (!fields.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    fields.forEach(function (f) {
+      var words = f.getAttribute('data-type').split(','), base = f.getAttribute('placeholder');
+      var w = 0, i = 0, del = false, timer = null, caret = true;
+      var visible = function () { var r = f.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; };
+      var step = function () {
+        if (document.activeElement === f || f.value) { f.setAttribute('placeholder', base); timer = null; return; }
+        if (!visible()) { timer = setTimeout(step, 600); return; }
+        var word = words[w];
+        if (!del) { i++; if (i === word.length) { del = true; caret = true; f.setAttribute('placeholder', word + '|'); timer = setTimeout(step, 1600); return; } }
+        else { i--; if (i === 0) { del = false; w = (w + 1) % words.length; f.setAttribute('placeholder', '|'); timer = setTimeout(step, 450); return; } }
+        f.setAttribute('placeholder', word.slice(0, i) + '|');
+        timer = setTimeout(step, del ? 55 : 110 + Math.random() * 60);
+      };
+      var start = function () { if (!timer && !f.value && document.activeElement !== f) { i = 0; del = false; timer = setTimeout(step, 500); } };
+      f.addEventListener('focus', function () { clearTimeout(timer); timer = null; f.setAttribute('placeholder', base); });
+      f.addEventListener('blur', start);
+      start();
+    });
+  })();
+
+  /* Tour buttons across the page lead to the tour form; a campus button preselects its campus */
+  (function () {
+    var card = document.querySelector('.tour-card');
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href="#book-a-tour"]');
+      if (!a || !card) return;
+      var c = a.getAttribute('data-campus');
+      if (c) { var r = document.querySelector('input[name="campus"][value="' + c + '"]'); if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); } }
+      card.classList.remove('is-arrived'); void card.offsetWidth; card.classList.add('is-arrived');
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'tour_cta_click', cta_location: (a.closest('section, header, .mobile-bar, footer') || {}).className || 'page', campus: c || '' });
+      setTimeout(function () { var f = document.getElementById('tj-child'); if (f) f.focus({ preventScroll: true }); }, 700);
+    });
+  })();
+
+/* Gentle reveal on scroll: fade and rise once, never replays. Off for reduced motion. */
+(function () {
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var GROUPS = '.stage-cards, .campus-cards, .steps, .bento, .guide-panels';
+  var DIG = '.steps-wrap, .teachers-head, .spaces-head, .day-copy';
+  var SKIP = '.steps-trail, svg, script, [aria-hidden="true"]';
+  var inners = document.querySelectorAll('.stages-inner, .campuses-inner, .day-inner, .teachers-inner, .voices-inner, .admissions-inner, .final-inner, .spaces-inner, .guides-inner, .faq-inner, .closing-inner');
+  if (!inners.length) return;
+  document.documentElement.classList.add('rv-js');
+
+  function show(el) {
+    el.classList.add('in');
+    var d = parseInt(el.style.getPropertyValue('--rv-d'), 10) || 0;
+    setTimeout(function () { el.classList.remove('rv', 'in'); el.style.removeProperty('--rv-d'); }, 800 + d);
+  }
+  var itemIO = new IntersectionObserver(function (en) {
+    en.forEach(function (e) { if (e.isIntersecting) { show(e.target); itemIO.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  var groupIO = new IntersectionObserver(function (en) {
+    en.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      [].forEach.call(e.target.children, function (c) { if (c.classList.contains('rv')) show(c); });
+      groupIO.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+
+  function prep(el, i) {
+    el.classList.add('rv');
+    el.style.setProperty('--rv-d', Math.min(i, 4) * 70 + 'ms');
+  }
+  function collect(el, i) {
+    if (el.matches(SKIP)) return;
+    if (!el.getClientRects().length) return; /* hidden at this size: never trap it invisible */
+    if (el.getBoundingClientRect().bottom < 0) return; /* already scrolled past: leave visible */
+    if (el.matches(GROUPS)) {
+      [].forEach.call(el.children, function (c, j) { prep(c, j); });
+      groupIO.observe(el);
+    } else if (el.matches(DIG)) {
+      [].forEach.call(el.children, collect);
+    } else {
+      prep(el, i);
+      itemIO.observe(el);
+    }
+  }
+  inners.forEach(function (inner) { [].forEach.call(inner.children, collect); });
+})();
