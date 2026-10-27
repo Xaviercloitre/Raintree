@@ -55,6 +55,24 @@
   .panel a small { display: block; color: var(--rt-slate); font-size: 13px; line-height: 1.4; }
   .panel .divider { height: 1px; background: var(--rt-border); margin: 8px 12px; }
 
+  /* Desktop mega menu: each panel opens as a full-width horizontal row of tiles under the header */
+  @media (min-width: 961px) {
+    .mainrow-inner { position: relative; }
+    .navitem { position: static; }
+    .panel { left: 0; right: 0; top: calc(100% + 14px); min-width: 0; transform: translateY(6px); display: flex; align-items: stretch; gap: 8px; padding: 14px; border-radius: 22px; }
+    .navitem:hover .panel, .navitem:focus-within .panel { transform: translateY(0); }
+    .panel::before { top: -14px; height: 14px; }
+    .panel a { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; min-height: 96px; padding: 16px 18px; border-radius: 16px; background: var(--rt-paper); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; position: relative; transition: background-color .15s ease, transform .15s ease; }
+    .panel a::after { content: "\2192"; position: absolute; right: 16px; bottom: 14px; font-weight: 500; color: var(--rt-slate); opacity: 0; transform: translateX(-4px); transition: opacity .15s ease, transform .15s ease; }
+    .panel a:hover, .panel a:focus-visible { background: var(--rt-canopy-tint); transform: translateY(-2px); }
+    .panel a:hover::after, .panel a:focus-visible::after { opacity: 1; transform: none; }
+    .panel a small { font-family: var(--rt-font-body); font-weight: 400; margin-top: 2px; }
+    .panel .divider { flex: 0 0 1px; width: 1px; height: auto; margin: 10px 4px; }
+    .panel.campuses { min-width: 0; }
+    .panel.campuses a .campus-chip { flex-wrap: wrap; justify-content: flex-start; }
+  }
+  @media (min-width: 961px) and (prefers-reduced-motion: reduce) { .panel a, .panel a::after { transition: none; } .panel a:hover { transform: none; } }
+
   /* Campuses panel: richer cards, fixed order, equal weight */
   .panel.campuses { min-width: 300px; }
   .campus-chip { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
