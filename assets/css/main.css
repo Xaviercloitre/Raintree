@@ -715,6 +715,33 @@
   .closing-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 24px; color: var(--rt-ink); margin: 0 0 8px; }
   .closing-text { font-size: 16px; color: var(--rt-ink); margin: 0 auto 20px; max-width: 46ch; }
 
+  /* In parents' words: editorial treatment, larger quote, soft canopy shapes behind */
+  .voices { position: relative; overflow: hidden; }
+  .voices-canopies { position: absolute; inset: 0; pointer-events: none; }
+  .voices-canopies svg { position: absolute; }
+  .vcan-1 { width: 460px; left: -170px; top: -90px; opacity: .9; animation: canopy-sway 30s ease-in-out infinite alternate; }
+  .vcan-1 path { fill: #fff; }
+  .vcan-2 { width: 380px; right: -140px; bottom: -110px; opacity: .55; animation: canopy-sway 36s ease-in-out infinite alternate-reverse; }
+  .vcan-2 path { fill: var(--rt-canopy); }
+  .vcan-3 { width: 150px; right: 14%; top: 60px; opacity: .7; }
+  .vcan-3 path { fill: #fff; }
+  .voices .voices-inner { position: relative; z-index: 1; padding-block: 96px 88px; }
+  .voices .voice-inner { padding-top: 52px; }
+  .voices .voice-inner .mark { font-family: Georgia, "Times New Roman", serif; font-size: 120px; top: -12px; color: var(--rt-canopy); }
+  .voices .voice-inner blockquote { font-family: var(--rt-font-head); font-weight: 500; font-size: clamp(22px, 2.6vw, 34px); line-height: 1.35; max-width: 38ch; margin-bottom: 28px; }
+  .voices .voice-inner figcaption { display: inline-flex; flex-direction: column; align-items: center; padding-top: 18px; background: url("/assets/img/chalk-underline.png") center top / 64px 5px no-repeat; }
+  .voices .voice-inner figcaption strong { font-size: 16px; }
+  .voices .voice-nav { margin-top: 30px; }
+  @media (prefers-reduced-motion: reduce) { .vcan-1, .vcan-2 { animation: none; } }
+  @media (max-width: 960px) {
+    .voices .voices-inner { padding-block: 56px; }
+    .voices .voice-inner { padding-top: 52px; }
+    .voices .voice-inner .mark { font-size: 96px; }
+    .vcan-1 { width: 300px; left: -150px; top: -70px; }
+    .vcan-2 { width: 260px; right: -130px; bottom: -90px; }
+    .vcan-3 { display: none; }
+  }
+
   /* ---------- Footer ---------- */
   .site-footer { background: transparent; margin-top: 64px; }
   .footer-wave { display: block; width: 100%; height: 48px; margin-bottom: -1px; }
