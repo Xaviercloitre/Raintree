@@ -72,7 +72,6 @@
     .navitem:nth-child(1) .panel { --cols: 5; }
     .navitem:nth-child(2) .panel { --cols: 4; }
     .navitem:nth-child(4) .panel { --cols: 4; }
-    .navitem:nth-child(5) .panel { --cols: 3; }
     .panel.campuses a .campus-chip { flex-wrap: wrap; justify-content: flex-start; }
   }
   /* Learning mega panel: link list + feature card */
@@ -95,6 +94,8 @@
     .panel.mega .mega-title { font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; color: var(--rt-ink); padding: 0 4px; }
     .panel.mega .mega-text { font-size: 13px; line-height: 1.45; color: var(--rt-slate); padding: 0 4px; }
     .panel.mega .mega-cta { font-family: var(--rt-font-head); font-weight: 600; font-size: 14px; color: var(--rt-accent); padding: 4px 4px 0; }
+    .panel.mega.mega-2 { grid-template-columns: 280px 230px; }
+    .panel.mega .mega-cta-ink { color: var(--rt-ink); }
   }
   /* Campuses mega panel: three equal photo cards + tour line */
   @media (min-width: 961px) {
