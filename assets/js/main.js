@@ -261,7 +261,7 @@
     var deck = sec.querySelector('.pillars');
     var inner = sec.querySelector('.approach-inner');
     var mq = window.matchMedia('(max-width: 960px)');
-    var REST = [-4, 3, -2], N = cards.length - 1;
+    var REST = [-4, 3, -2, 4, -3], N = cards.length - 1;
     var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
     var ease = function (x) { return x * x * (3 - 2 * x); };
     var vh = document.documentElement.clientHeight, lastW = window.innerWidth;

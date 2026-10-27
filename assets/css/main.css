@@ -176,10 +176,9 @@
   .approach-head { max-width: 640px; margin-bottom: 40px; }
   .approach h2 { font-family: var(--rt-font-head); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; color: var(--rt-ink); margin: 0 0 14px; }
   .approach-intro { font-size: 17px; color: var(--rt-ink); margin: 0; max-width: 60ch; }
-  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 0 0 36px; padding: 0; list-style: none; }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; margin: 0 0 36px; padding: 0; list-style: none; }
   .pillar { background: var(--rt-canopy-tint); border-radius: var(--rt-radius-card); padding: 28px 28px 30px; display: flex; flex-direction: column; gap: 10px; }
-  .pillar svg { width: 34px; height: 34px; margin-bottom: 4px; }
-  .pillar svg path, .pillar svg circle { stroke: var(--rt-ink); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .pillar-ic { width: 56px; height: 56px; margin-bottom: 4px; border-radius: 50%; }
   .pillar h3 { font-family: var(--rt-font-head); font-weight: 600; font-size: 18px; color: var(--rt-ink); margin: 0; }
   .pillar p { margin: 0; color: var(--rt-slate); font-size: 15px; line-height: 1.6; }
   .approach-head .approach-cta { margin: 28px 0 0; }
@@ -197,15 +196,18 @@
   .approach.deck.deck-done .deck-hint .dh-dots { display: inline-flex; gap: 5px; }
   .approach.deck.deck-done .deck-hint .dh-dots i { width: 7px; height: 7px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
   .approach.deck.deck-done .deck-hint .dh-dots i.on { width: 18px; background: var(--rt-slate); }
-  .approach.deck .approach-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; height: calc(100vh + 50vh); height: calc(100svh + 50svh); padding-block: 0; }
+  .approach.deck .approach-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; height: calc(100vh + 100vh); height: calc(100svh + 100svh); padding-block: 0; }
   .approach.deck .approach-head { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; margin: 0; padding-top: 80px; }
   .approach.deck .pillars-stage { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; align-items: center; justify-content: center; padding-top: 80px; }
   .approach.deck .pillars { position: relative; display: block; width: min(100%, 440px); aspect-ratio: 1; margin: 0; }
   .approach.deck .pillar { position: absolute; inset: 0; padding: 40px 40px 44px; justify-content: flex-end; gap: 12px; box-shadow: 0 18px 40px rgba(46,53,64,.10); will-change: transform, opacity; transform-origin: 50% 80%; backface-visibility: hidden; }
-  .approach.deck .pillar:nth-child(1) { background: var(--rt-canopy); z-index: 3; }
-  .approach.deck .pillar:nth-child(2) { background: var(--rt-canopy-tint); z-index: 2; }
-  .approach.deck .pillar:nth-child(3) { background: #fff; border: 1px solid var(--rt-border); z-index: 1; }
-  .approach.deck .pillar svg { position: absolute; top: 36px; left: 40px; width: 44px; height: 44px; margin: 0; }
+  .approach.deck .pillar:nth-child(1) { background: var(--rt-canopy); }
+  .approach.deck .pillar:nth-child(2) { background: var(--rt-canopy-tint); }
+  .approach.deck .pillar:nth-child(1) { z-index: 5; } .approach.deck .pillar:nth-child(2) { z-index: 4; }
+  .approach.deck .pillar:nth-child(3) { background: #fff; border: 1px solid var(--rt-border); z-index: 3; }
+  .approach.deck .pillar:nth-child(4) { background: var(--rt-canopy); z-index: 2; }
+  .approach.deck .pillar:nth-child(5) { background: var(--rt-canopy-tint); z-index: 1; }
+  .approach.deck .pillar-ic { position: absolute; top: 32px; left: 36px; width: 72px; height: 72px; margin: 0; }
   .approach.deck .pillar h3 { font-size: 32px; line-height: 1.15; }
   .approach.deck .pillar p { color: var(--rt-ink); font-size: 16px; }
   @media (max-width: 960px) {
@@ -223,7 +225,7 @@
     .deck-hint .dh-dots i { width: 7px; height: 7px; border-radius: 999px; background: var(--rt-canopy); transition: width .2s ease, background-color .2s ease; }
     .deck-hint .dh-dots i.on { width: 18px; background: var(--rt-slate); }
     .approach.deck .pillar { padding: 28px 26px 30px; }
-    .approach.deck .pillar svg { top: 26px; left: 26px; width: 38px; height: 38px; }
+    .approach.deck .pillar-ic { top: 22px; left: 22px; width: 60px; height: 60px; }
     .approach.deck .pillar h3 { font-size: 26px; }
     .approach.deck .pillar p { font-size: 15px; }
   }
