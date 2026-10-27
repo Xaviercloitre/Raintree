@@ -55,20 +55,25 @@
   .panel a small { display: block; color: var(--rt-slate); font-size: 13px; line-height: 1.4; }
   .panel .divider { height: 1px; background: var(--rt-border); margin: 8px 12px; }
 
-  /* Desktop mega menu: each panel opens as a full-width horizontal row of tiles under the header */
+  /* Desktop mega menu: a compact horizontal row of tiles, centred under the menu, sized to its content */
   @media (min-width: 961px) {
-    .mainrow-inner { position: relative; }
+    nav.primary { position: relative; }
     .navitem { position: static; }
-    .panel { left: 0; right: 0; top: calc(100% + 14px); min-width: 0; transform: translateY(6px); display: flex; align-items: stretch; gap: 8px; padding: 14px; border-radius: 22px; }
-    .navitem:hover .panel, .navitem:focus-within .panel { transform: translateY(0); }
-    .panel::before { top: -14px; height: 14px; }
-    .panel a { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; min-height: 96px; padding: 16px 18px; border-radius: 16px; background: var(--rt-paper); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; position: relative; transition: background-color .15s ease, transform .15s ease; }
-    .panel a::after { content: "\2192"; position: absolute; right: 16px; bottom: 14px; font-weight: 500; color: var(--rt-slate); opacity: 0; transform: translateX(-4px); transition: opacity .15s ease, transform .15s ease; }
+    .panel { left: 50%; right: auto; top: calc(100% + 26px); width: max-content; min-width: 0; transform: translateX(-50%) translateY(6px); display: grid; grid-template-columns: repeat(var(--cols, 4), var(--tile, 160px)); align-items: stretch; gap: 8px; padding: 12px; border-radius: 22px; }
+    .navitem:hover .panel, .navitem:focus-within .panel { transform: translateX(-50%) translateY(0); }
+    .panel::before { top: -26px; height: 26px; }
+    .panel a { min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; min-height: 84px; padding: 14px 16px 28px; border-radius: 14px; background: var(--rt-paper); font-family: var(--rt-font-head); font-weight: 600; font-size: 15px; line-height: 1.3; position: relative; transition: background-color .15s ease, transform .15s ease; }
+    .panel a::after { content: "\2192"; position: absolute; right: 14px; bottom: 10px; font-weight: 500; color: var(--rt-slate); opacity: 0; transform: translateX(-4px); transition: opacity .15s ease, transform .15s ease; }
     .panel a:hover, .panel a:focus-visible { background: var(--rt-canopy-tint); transform: translateY(-2px); }
     .panel a:hover::after, .panel a:focus-visible::after { opacity: 1; transform: none; }
     .panel a small { font-family: var(--rt-font-body); font-weight: 400; margin-top: 2px; }
-    .panel .divider { flex: 0 0 1px; width: 1px; height: auto; margin: 10px 4px; }
-    .panel.campuses { min-width: 0; }
+    .panel .divider { display: none; }
+    /* Columns per menu: one row where it fits, Learning in two rows of four */
+    .navitem:nth-child(1) .panel { --cols: 5; }
+    .navitem:nth-child(2) .panel { --cols: 4; }
+    .navitem:nth-child(3) .panel { --cols: 3; --tile: 220px; }
+    .navitem:nth-child(4) .panel { --cols: 4; }
+    .navitem:nth-child(5) .panel { --cols: 3; }
     .panel.campuses a .campus-chip { flex-wrap: wrap; justify-content: flex-start; }
   }
   @media (min-width: 961px) and (prefers-reduced-motion: reduce) { .panel a, .panel a::after { transition: none; } .panel a:hover { transform: none; } }
