@@ -139,19 +139,34 @@
       dayPlay.remove();
     });
 
-    /* Hero video: a self-hosted 23-second loop cut from the Prestige Perspective film
-       (muted, so it autoplays on iPhone and Android). The poster frame shows first and
-       stays for reduced motion or data saver; the video fades in once it is playing. */
+    /* Hero video: a self-hosted 23-second loop cut from the Prestige Perspective film.
+       Muted + playsinline + autoplay so iPhone and Android start it on their own; a lighter
+       480p file is picked on phones. If the browser still blocks it (e.g. iOS Low Power
+       Mode), it starts on the first touch or scroll. Reduced motion / data saver: poster only. */
     var hv = document.getElementById('hero-video');
-    var conn = navigator.connection || {};
-    if (hv && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !conn.saveData) {
-      hv.preload = 'auto';
-      hv.addEventListener('playing', function () { hv.classList.add('playing'); });
-      var tryPlay = function () { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); };
-      if (document.readyState === 'complete') tryPlay(); else window.addEventListener('load', tryPlay);
-      /* pause when the hero is off screen, to save battery */
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (en) { if (en[0].isIntersecting) tryPlay(); else hv.pause(); }).observe(hv);
+    if (hv) {
+      var conn = navigator.connection || {};
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn.saveData;
+      hv.muted = true; hv.defaultMuted = true; hv.setAttribute('muted', '');
+      if (still) {
+        hv.removeAttribute('autoplay'); hv.pause(); hv.preload = 'none';
+      } else {
+        /* pick the source in JS too: older Safari ignores media on <source> */
+        if (window.matchMedia('(max-width: 760px)').matches) {
+          var m = hv.querySelector('source[media]');
+          if (m && hv.currentSrc.indexOf('-mobile') === -1) { hv.src = m.getAttribute('src'); }
+        }
+        hv.preload = 'auto';
+        hv.addEventListener('playing', function () { hv.classList.add('playing'); });
+        var tryPlay = function () { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); };
+        tryPlay();
+        hv.addEventListener('canplay', tryPlay, { once: true });
+        var kick = function () { if (hv.paused) tryPlay(); };
+        ['touchstart', 'scroll', 'click'].forEach(function (ev) { window.addEventListener(ev, kick, { passive: true, once: true }); });
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (en) { if (en[0].isIntersecting) tryPlay(); else hv.pause(); }).observe(hv);
+        }
       }
     }
   })();
