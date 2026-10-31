@@ -224,6 +224,30 @@
     .hero-lede { font-size: 16px; }
   }
 
+  /* ---------- Hero: scroll-led campus walk ----------
+     The card pins under the header while the section scrolls past; scroll position picks the frame.
+     html.walk-on is set by main.js only when motion is allowed, so without JS, with reduced motion
+     or data saver, the card stays static and shows one still. */
+  .hero-walk { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .6s ease; }
+  .hero-walk.ready { opacity: 1; }
+  .hero-end, .hero-cue { display: none; }
+  html.walk-on .hero { height: 300vh; padding-bottom: 0; }
+  html.walk-on .hero-card { position: sticky; top: calc(var(--hdr, 120px) + 18px); height: calc(100vh - var(--hdr, 120px) - var(--bar, 0px) - 36px); height: calc(100svh - var(--hdr, 120px) - var(--bar, 0px) - 36px); min-height: 440px; display: flex; align-items: center; justify-content: center; }
+  html.walk-on .hero-content { will-change: opacity, transform; padding-top: 40px; padding-bottom: 64px; }
+  html.walk-on .hero-scrim { will-change: opacity; }
+  html.walk-on .hero-end { display: flex; position: absolute; left: 0; right: 0; bottom: 28px; z-index: 3; justify-content: center; flex-wrap: wrap; gap: 14px; padding: 0 20px; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .4s ease, transform .4s ease, visibility 0s linear .4s; }
+  html.walk-on .hero-end.on { opacity: 1; visibility: visible; transform: none; transition: opacity .4s ease, transform .4s ease; }
+  html.walk-on .hero-end .btn-apply { background: rgba(255,255,255,.85); }
+  html.walk-on .hero-cue { display: block; position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 3; overflow: hidden; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--rt-border); background: rgba(251,250,247,.82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-family: var(--rt-font-head); font-weight: 600; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--rt-slate); white-space: nowrap; transition: opacity .4s ease; }
+  .hero-cue i { position: absolute; inset: 0; width: 0; background: var(--rt-canopy); opacity: .6; z-index: -1; }
+  .hero-cue span { position: relative; }
+  html.walk-on .hero-cue.off { opacity: 0; }
+  @media (max-width: 960px) {
+    html.walk-on .hero-card { top: calc(var(--hdr, 72px) + 12px); height: calc(100vh - var(--hdr, 72px) - var(--bar, 0px) - 24px); height: calc(100svh - var(--hdr, 72px) - var(--bar, 0px) - 24px); min-height: 420px; }
+    html.walk-on .hero-end { bottom: 20px; }
+    html.walk-on .hero-cue { bottom: 16px; font-size: 10px; }
+  }
+
 
   /* ---------- Proof strip ---------- */
 
