@@ -139,36 +139,142 @@
       dayPlay.remove();
     });
 
-    /* Hero video: a self-hosted 23-second loop cut from the Prestige Perspective film.
-       Muted + playsinline + autoplay so iPhone and Android start it on their own; a lighter
-       480p file is picked on phones. If the browser still blocks it (e.g. iOS Low Power
-       Mode), it starts on the first touch or scroll. Reduced motion / data saver: poster only. */
-    var hv = document.getElementById('hero-video');
-    if (hv) {
-      var conn = navigator.connection || {};
-      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn.saveData;
-      hv.muted = true; hv.defaultMuted = true; hv.setAttribute('muted', '');
-      if (still) {
-        hv.removeAttribute('autoplay'); hv.pause(); hv.preload = 'none';
-      } else {
-        /* pick the source in JS too: older Safari ignores media on <source> */
-        if (window.matchMedia('(max-width: 760px)').matches) {
-          var m = hv.querySelector('source[media]');
-          if (m && hv.currentSrc.indexOf('-mobile') === -1) { hv.src = m.getAttribute('src'); }
-        }
-        hv.preload = 'auto';
-        hv.addEventListener('playing', function () { hv.classList.add('playing'); });
-        var tryPlay = function () { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); };
-        tryPlay();
-        hv.addEventListener('canplay', tryPlay, { once: true });
-        var kick = function () { if (hv.paused) tryPlay(); };
-        ['touchstart', 'scroll', 'click'].forEach(function (ev) { window.addEventListener(ev, kick, { passive: true, once: true }); });
-        document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver(function (en) { if (en[0].isIntersecting) tryPlay(); else hv.pause(); }).observe(hv);
-        }
+  })();
+
+  /* Hero campus walk: scrolling walks the visitor from the street into the Sathorn garden.
+     106 stills cut from the Prestige Perspective film are drawn to a canvas; scroll position
+     picks the frame. One rAF loop, frame-rate independent easing, and a crossfade between
+     neighbouring frames so the motion stays continuous. Phones get a lighter portrait set.
+     Reduced motion or data saver: no scrubbing, one still, the card stays as it was. */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var canvas = document.getElementById('hero-walk');
+    if (!hero || !canvas || !canvas.getContext) return;
+    var card = hero.querySelector('.hero-card');
+    var content = hero.querySelector('.hero-content');
+    var scrim = hero.querySelector('.hero-scrim');
+    var endCtas = hero.querySelector('.hero-end');
+    var cue = hero.querySelector('.hero-cue');
+    var cueFill = cue && cue.querySelector('i');
+    var header = document.querySelector('.site-header');
+    var bar = document.querySelector('.mobile-bar');
+    var ctx = canvas.getContext('2d', { alpha: false });
+
+    var COUNT = 106, START_AT = 24, SMOOTH_MS = 90, STILL_FRAME = 46;
+    var mobile = window.matchMedia('(max-width: 760px)').matches;
+    var dir = '/assets/video/campus-walk/' + (mobile ? 'mobile' : 'desktop') + '/raintree-sathorn-campus-walk-';
+    var url = function (i) { return dir + String(i + 1).padStart(4, '0') + '.webp'; };
+    var conn = navigator.connection || {};
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn.saveData;
+
+    var imgs = new Array(COUNT), cw = 0, ch = 0;
+    function ok(i) { var im = imgs[i]; return !!(im && im.complete && im.naturalWidth); }
+    function nearest(i) { for (var d = 0; d < COUNT; d++) { if (ok(i - d)) return i - d; if (ok(i + d)) return i + d; } return -1; }
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      cw = canvas.clientWidth; ch = canvas.clientHeight;
+      canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function cover(im, alpha) {
+      var s = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * s, h = im.naturalHeight * s;
+      ctx.globalAlpha = alpha; ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);
+    }
+    function draw(f) {
+      f = Math.max(0, Math.min(COUNT - 1, f));
+      var i0 = Math.floor(f), frac = f - i0, base = ok(i0) ? i0 : nearest(i0);
+      if (base < 0) return;
+      cover(imgs[base], 1);
+      if (base === i0 && frac > 0.01 && ok(i0 + 1)) cover(imgs[i0 + 1], frac);
+      ctx.globalAlpha = 1;
+    }
+
+    if (still) {
+      var im = new Image();
+      im.onload = function () { imgs[STILL_FRAME] = im; resize(); draw(STILL_FRAME); canvas.classList.add('ready'); };
+      im.src = url(STILL_FRAME);
+      window.addEventListener('resize', function () { if (ok(STILL_FRAME)) { resize(); draw(STILL_FRAME); } });
+      return;
+    }
+
+    document.documentElement.classList.add('walk-on');
+    endCtas.removeAttribute('aria-hidden');
+    function measure() {
+      var root = document.documentElement.style;
+      root.setProperty('--hdr', (header ? header.offsetHeight : 0) + 'px');
+      root.setProperty('--bar', (bar && getComputedStyle(bar).display !== 'none' ? bar.offsetHeight : 0) + 'px');
+    }
+    measure();
+
+    /* 0 when the card first pins under the header, 1 when it is about to scroll away */
+    var padTop = 0, pinTop = 0;
+    function readPin() {
+      padTop = parseFloat(getComputedStyle(hero).paddingTop) || 0;
+      pinTop = parseFloat(getComputedStyle(card).top) || 0;
+    }
+    function progress() {
+      var total = hero.offsetHeight - padTop - card.offsetHeight;
+      if (total <= 0) return 0;
+      var scrolled = pinTop - (hero.getBoundingClientRect().top + padTop);
+      return Math.max(0, Math.min(1, scrolled / total));
+    }
+    var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+    var endOn = false, lastP = -1;
+    function ui(p) {
+      if (Math.abs(p - lastP) < 0.0005) return;
+      lastP = p;
+      /* intro copy fades and lifts away over the first stretch of the walk, the scrim with it */
+      var out = clamp01((p - 0.06) / 0.16);
+      content.style.opacity = (1 - out).toFixed(3);
+      content.style.transform = 'translate3d(0,' + (-24 * out).toFixed(1) + 'px,0)';
+      content.style.visibility = out >= 1 ? 'hidden' : '';
+      scrim.style.opacity = (1 - out * 0.85).toFixed(3);
+      var on = p > 0.86;
+      if (on !== endOn) {
+        endOn = on; endCtas.classList.toggle('on', on);
+        endCtas.querySelectorAll('a').forEach(function (a) { a.tabIndex = on ? 0 : -1; });
+      }
+      if (cueFill) cueFill.style.width = (clamp01(p / 0.86) * 100).toFixed(1) + '%';
+      if (cue) cue.classList.toggle('off', on);
+    }
+
+    var started = false, current = 0, lastDrawn = -1, last = 0, running = false, visible = true;
+    function loop(now) {
+      if (!visible) { running = false; return; }
+      var dt = Math.min(50, now - last); last = now;
+      var p = progress(), target = p * (COUNT - 1);
+      current += (target - current) * (1 - Math.exp(-dt / SMOOTH_MS));
+      if (Math.abs(target - current) < 0.001) current = target;
+      if (Math.abs(current - lastDrawn) > 0.002) { draw(current); lastDrawn = current; }
+      ui(p);
+      requestAnimationFrame(loop);
+    }
+    function run() { if (!running && started) { running = true; last = performance.now(); requestAnimationFrame(loop); } }
+    function start() {
+      if (started) return;
+      started = true; resize();
+      current = progress() * (COUNT - 1); draw(current); lastDrawn = current;
+      canvas.classList.add('ready'); run();
+    }
+    readPin();
+    ui(progress());
+
+    /* load in order, six at a time; start once the first frames are in */
+    var next = 0, inflight = 0, loaded = 0;
+    function pump() {
+      while (inflight < 6 && next < COUNT) {
+        var n = next++, img = new Image();
+        img.decoding = 'async'; inflight++;
+        img.onload = img.onerror = function () { inflight--; loaded++; if (!started && loaded >= START_AT) start(); else lastDrawn = -1; pump(); };
+        img.src = url(n); imgs[n] = img;
       }
     }
+    pump();
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) run(); }).observe(hero);
+    }
+    window.addEventListener('resize', function () { measure(); readPin(); if (started) { resize(); draw(current); } lastP = -1; ui(progress()); });
   })();
 
   /* Chalk underlines: draw each one in once, the first time it comes into view */
